@@ -28,8 +28,12 @@ namespace ProjektGrupowy
         {
             Panel Panel = new Panel();
             Program.Start1.Hide();
-            Panel.Show();
             
+            Panel.MOcenyGroup.Enabled = false;
+            Panel.DaneGroup.Enabled = false;
+            Panel.POcenaGroup.Enabled = false;
+            Panel.PanelTabControl.SelectedTab = Panel.TabZespoly;
+            Panel.Show();
         }
     }
 }

@@ -80,6 +80,7 @@
             this.VREnd = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.VCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ZespolGroup = new System.Windows.Forms.GroupBox();
+            this.ZPlytyButton = new System.Windows.Forms.Button();
             this.ZEditGroup = new System.Windows.Forms.GroupBox();
             this.ZCancel = new System.Windows.Forms.Button();
             this.ZSaveButton = new System.Windows.Forms.Button();
@@ -656,6 +657,7 @@
             // 
             // ZespolGroup
             // 
+            this.ZespolGroup.Controls.Add(this.ZPlytyButton);
             this.ZespolGroup.Controls.Add(this.ZEditGroup);
             this.ZespolGroup.Controls.Add(this.ZRokEndBox1);
             this.ZespolGroup.Controls.Add(this.ZNazwa1);
@@ -665,12 +667,22 @@
             this.ZespolGroup.Controls.Add(this.ZGatunek1);
             this.ZespolGroup.Controls.Add(this.ZRokSt1);
             this.ZespolGroup.Controls.Add(this.ZGatunekBox1);
-            this.ZespolGroup.Location = new System.Drawing.Point(760, 0);
+            this.ZespolGroup.Location = new System.Drawing.Point(760, 1);
             this.ZespolGroup.Name = "ZespolGroup";
             this.ZespolGroup.Size = new System.Drawing.Size(278, 298);
             this.ZespolGroup.TabIndex = 1;
             this.ZespolGroup.TabStop = false;
             this.ZespolGroup.Text = "Zespół";
+            // 
+            // ZPlytyButton
+            // 
+            this.ZPlytyButton.Location = new System.Drawing.Point(13, 251);
+            this.ZPlytyButton.Name = "ZPlytyButton";
+            this.ZPlytyButton.Size = new System.Drawing.Size(256, 36);
+            this.ZPlytyButton.TabIndex = 20;
+            this.ZPlytyButton.Text = "Pokaż płyty";
+            this.ZPlytyButton.UseVisualStyleBackColor = true;
+            this.ZPlytyButton.Click += new System.EventHandler(this.ZPlytyButton_Click);
             // 
             // ZEditGroup
             // 
@@ -698,6 +710,7 @@
             // 
             // ZSaveButton
             // 
+            this.ZSaveButton.Enabled = false;
             this.ZSaveButton.Location = new System.Drawing.Point(136, 53);
             this.ZSaveButton.Name = "ZSaveButton";
             this.ZSaveButton.Size = new System.Drawing.Size(125, 28);
@@ -1094,9 +1107,9 @@
             this.PVRok,
             this.PVSciezko,
             this.PVAvg});
-            this.PlytyList.Location = new System.Drawing.Point(287, 3);
+            this.PlytyList.Location = new System.Drawing.Point(287, 5);
             this.PlytyList.Name = "PlytyList";
-            this.PlytyList.Size = new System.Drawing.Size(467, 294);
+            this.PlytyList.Size = new System.Drawing.Size(467, 293);
             this.PlytyList.TabIndex = 5;
             this.PlytyList.UseCompatibleStateImageBehavior = false;
             this.PlytyList.View = System.Windows.Forms.View.Details;
@@ -1139,7 +1152,7 @@
             this.PlytaGroup.Controls.Add(this.PRok1);
             this.PlytaGroup.Controls.Add(this.PGatunek1);
             this.PlytaGroup.Controls.Add(this.PGatunekBox1);
-            this.PlytaGroup.Location = new System.Drawing.Point(760, 3);
+            this.PlytaGroup.Location = new System.Drawing.Point(760, 1);
             this.PlytaGroup.Name = "PlytaGroup";
             this.PlytaGroup.Size = new System.Drawing.Size(278, 298);
             this.PlytaGroup.TabIndex = 4;
@@ -1197,7 +1210,6 @@
             // 
             // POcenaBox
             // 
-            this.POcenaBox.Enabled = false;
             this.POcenaBox.FormattingEnabled = true;
             this.POcenaBox.Location = new System.Drawing.Point(78, 15);
             this.POcenaBox.Name = "POcenaBox";
@@ -1237,6 +1249,7 @@
             // 
             // PCancel
             // 
+            this.PCancel.Enabled = false;
             this.PCancel.Location = new System.Drawing.Point(6, 53);
             this.PCancel.Name = "PCancel";
             this.PCancel.Size = new System.Drawing.Size(125, 28);
@@ -1247,6 +1260,7 @@
             // 
             // PSaveButton
             // 
+            this.PSaveButton.Enabled = false;
             this.PSaveButton.Location = new System.Drawing.Point(137, 53);
             this.PSaveButton.Name = "PSaveButton";
             this.PSaveButton.Size = new System.Drawing.Size(125, 28);
@@ -1571,11 +1585,11 @@
 
         }
 
-        private System.Windows.Forms.TabControl PanelTabControl;
-        private System.Windows.Forms.TabPage TabMojeOceny;
-        private System.Windows.Forms.TabPage TabZespoly;
-        private System.Windows.Forms.TabPage TabPlyty;
-        private System.Windows.Forms.GroupBox MOcenyGroup;
+        public System.Windows.Forms.TabControl PanelTabControl;
+        public System.Windows.Forms.TabPage TabMojeOceny;
+        public System.Windows.Forms.TabPage TabZespoly;
+        public System.Windows.Forms.TabPage TabPlyty;
+        public System.Windows.Forms.GroupBox MOcenyGroup;
         private System.Windows.Forms.GroupBox OcenyPlytaGroup;
         private System.Windows.Forms.Button OcenaSave;
         private System.Windows.Forms.TextBox ZespolBox;
@@ -1679,7 +1693,7 @@
         private System.Windows.Forms.CheckBox PZespolCheck;
         private System.Windows.Forms.TextBox PZespolBox;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.GroupBox POcenaGroup;
+        public System.Windows.Forms.GroupBox POcenaGroup;
         private System.Windows.Forms.Button POcenaDodaj;
         private System.Windows.Forms.Label POcena;
         private System.Windows.Forms.ComboBox POcenaBox;
@@ -1688,7 +1702,7 @@
         private System.Windows.Forms.ComboBox PZespolBox1;
         private System.Windows.Forms.Label PZespol1;
         private System.Windows.Forms.ColumnHeader PVAvg;
-        private System.Windows.Forms.GroupBox DaneGroup;
+        public System.Windows.Forms.GroupBox DaneGroup;
         private System.Windows.Forms.Label Imie;
         private System.Windows.Forms.Button DaneSave;
         private System.Windows.Forms.Label Nick;
@@ -1710,6 +1724,7 @@
         private System.Windows.Forms.Label Plec;
         private System.Windows.Forms.Button ZCancel;
         private System.Windows.Forms.Button PCancel;
+        private System.Windows.Forms.Button ZPlytyButton;
 
         //private void InitializeComponent(bool parametr)
         //{

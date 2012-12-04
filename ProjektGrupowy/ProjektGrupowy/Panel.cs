@@ -40,7 +40,7 @@ namespace ProjektGrupowy
 
         private void ZEditButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Odblokuje pola powyżej");
+            MessageBox.Show("Odblokuje pola powyżej, docelowo edycja i dodawanie dostępne tylko dla admina ");
             this.ZOdblokuj();
             ZEditButton.Enabled = false;
             ZNewButton.Enabled = false;
@@ -100,7 +100,9 @@ namespace ProjektGrupowy
         private void PSaveButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show("gdy edycja - update; gdy nowy - insert; na koniec zablokuje pola powyżej");
-            this.ZZablokuj();
+            this.PZablokuj();
+            PEditButton.Enabled = true;
+            PNewButton.Enabled = true;
         }
 
         private void Panel_FormClosed(object sender, FormClosedEventArgs e)
@@ -138,6 +140,7 @@ namespace ProjektGrupowy
             ZRokEndBox1.Enabled = true;
             ZRokStBox1.Enabled = true;
             ZCancel.Enabled = true;
+            ZSaveButton.Enabled = true;
         }
 
         private void ZZablokuj()
@@ -147,6 +150,7 @@ namespace ProjektGrupowy
             ZRokEndBox1.Enabled = false;
             ZRokStBox1.Enabled = false;
             ZCancel.Enabled = false;
+            ZSaveButton.Enabled = false;
         }
 
         private void ZWyczysc()
@@ -164,6 +168,7 @@ namespace ProjektGrupowy
             PRokBox1.Enabled = true;
             PSciezkiBox1.Enabled = true;
             PCancel.Enabled = true;
+            PSaveButton.Enabled = true;
         }
 
         private void PZablokuj()
@@ -174,6 +179,7 @@ namespace ProjektGrupowy
             PRokBox1.Enabled = false;
             PSciezkiBox1.Enabled = false;
             PCancel.Enabled = false;
+            PSaveButton.Enabled = false;
         }
 
         private void PWyczysc()
@@ -183,7 +189,6 @@ namespace ProjektGrupowy
             PZespolBox1.Text = "";
             PRokBox1.Text = "";
             PSciezkiBox1.Text = "";
-            PCancel.Text = "";
         }
 
         private void PCancel_Click(object sender, EventArgs e)
@@ -192,6 +197,12 @@ namespace ProjektGrupowy
             this.PZablokuj();
             PEditButton.Enabled = true;
             PNewButton.Enabled = true;
+        }
+
+        private void ZPlytyButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Dodać komunikat, gdy nie  jest wybrany zespół");
+            PanelTabControl.SelectedTab = TabPlyty;
         }
 
 
