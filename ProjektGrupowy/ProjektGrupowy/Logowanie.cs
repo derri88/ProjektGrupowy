@@ -23,20 +23,19 @@ namespace ProjektGrupowy
             Program.Start1.Show();
         }
 
-        public int DaneLogowania() //Z powodu braku oficjalnej bazy, zrobiłem bazę o nazwie probra, gdzie za login sluzy imie a za hasło nazwisko.
+        public int DaneLogowania() //Działa z oficjalną bazą (konstrukcją bazy), ale adres bazy i jej nazwa to wartości lokalne.
         {
             int ID, count;
-            string Imie, Nazwisko;
-            string ConnectionString = "Server=(localdb)\\Projects;Database=Proba;Trusted_Connection=True;";
-            string IleRekordow = "SELECT COUNT(*) " +
-                                    "FROM Pracownik " +
-                                    "WHERE Imie = '" + LoginBox.Text + "'" +
-                                    "AND Nazwisko = '" + HasloBox.Text + "'";
+            string ConnectionString = "Server=(localdb)\\Projects;Database=Muzyka;Trusted_Connection=True;";
+            string IleRekordow = "SELECT COUNT (*) " +
+                                "FROM Users INNER JOIN User_password ON Users.ID_user = User_password.ID_user " +
+                                "WHERE Users.Nick = '" + LoginBox.Text + "'" +
+                                "AND User_password.Password = '" + HasloBox.Text + "'";
 
-            string CheckUser = "SELECT Id, Imie, Nazwisko " +
-                                    "FROM Pracownik " +
-                                    "WHERE Imie = '" + LoginBox.Text + "'" +
-                                    "AND Nazwisko = '" + HasloBox.Text + "'";
+            string CheckUser =  "SELECT Users.ID_user " + 
+                                "FROM Users INNER JOIN User_password ON Users.ID_user = User_password.ID_user " +
+                                "WHERE Users.Nick = '" + LoginBox.Text + "'" +
+                                "AND User_password.Password = '" + HasloBox.Text + "'";
 
             SqlConnection Conn = new SqlConnection(ConnectionString);
             Conn.Open();
@@ -48,8 +47,6 @@ namespace ProjektGrupowy
             SqlDataReader Data = DataCmd.ExecuteReader();
             if (count == 1 && Data.Read())
             {
-                Imie = Data[1].ToString();
-                Nazwisko = Data[2].ToString();
                 ID = Data.GetInt32(0);
                 return ID;
             }
