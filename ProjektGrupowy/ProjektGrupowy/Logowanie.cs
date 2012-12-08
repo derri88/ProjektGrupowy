@@ -48,6 +48,8 @@ namespace ProjektGrupowy
             if (count == 1 && Data.Read())
             {
                 ID = Data.GetInt32(0);
+                Data.Close();
+                Conn.Close();
                 return ID;
             }
             else return 0;
