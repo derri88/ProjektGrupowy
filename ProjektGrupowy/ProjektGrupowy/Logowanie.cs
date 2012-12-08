@@ -26,7 +26,7 @@ namespace ProjektGrupowy
         public int DaneLogowania() //Działa z oficjalną bazą (konstrukcją bazy), ale adres bazy i jej nazwa to wartości lokalne.
         {
             int ID, count;
-            string ConnectionString = "Server=(localdb)\\Projects;Database=Muzyka;Trusted_Connection=True;";
+            string ConnectionString = "Server=ProjektGrupowy.mssql.somee.com; Database=ProjektGrupowy; User ID=derri_SQLLogin_1; Password=pe2fjz4yh9;";
             string IleRekordow = "SELECT COUNT (*) " +
                                 "FROM Users INNER JOIN User_password ON Users.ID_user = User_password.ID_user " +
                                 "WHERE Users.Nick = '" + LoginBox.Text + "'" +
