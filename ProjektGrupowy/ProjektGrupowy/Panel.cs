@@ -47,14 +47,16 @@ namespace ProjektGrupowy
         private void MOcenyList_SelectedIndexChanged(object sender, EventArgs e)
         {
             //MessageBox.Show("Do dodania funkcja która przeniesie zaznaczony rekord do pól po prawej");
-            
-            PlytaBox.Text = MOcenyList.SelectedItems[0].SubItems[1].Text;
-            ZespolBox.Text = MOcenyList.SelectedItems[0].SubItems[2].Text;
-            GatunekBox.Text = MOcenyList.SelectedItems[0].SubItems[3].Text;
-            RokBox.Text = MOcenyList.SelectedItems[0].SubItems[4].Text;
-            SciezkiBox.Text = MOcenyList.SelectedItems[0].SubItems[5].Text;
-            OcenaBox.Text = MOcenyList.SelectedItems[0].SubItems[6].Text;
-            ID_Selected_MPlyta = Int32.Parse(MOcenyList.SelectedItems[0].SubItems[0].Text);
+            if (MOcenyList.SelectedItems.Count != 0)
+            {
+                PlytaBox.Text = MOcenyList.SelectedItems[0].SubItems[1].Text;
+                ZespolBox.Text = MOcenyList.SelectedItems[0].SubItems[2].Text;
+                GatunekBox.Text = MOcenyList.SelectedItems[0].SubItems[3].Text;
+                RokBox.Text = MOcenyList.SelectedItems[0].SubItems[4].Text;
+                SciezkiBox.Text = MOcenyList.SelectedItems[0].SubItems[5].Text;
+                OcenaBox.Text = MOcenyList.SelectedItems[0].SubItems[6].Text;
+                ID_Selected_MPlyta = Int32.Parse(MOcenyList.SelectedItems[0].SubItems[0].Text);
+            }
             //MessageBox.Show(ID_Selected_MPlyta.ToString());
         }
 
