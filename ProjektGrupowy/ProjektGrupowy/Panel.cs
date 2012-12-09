@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,8 @@ namespace ProjektGrupowy
 {
     public partial class Panel : Form
     {
+        public static int ID_Selected_MPlyta = 0;
+
         public Panel()
         {
             InitializeComponent();
@@ -23,13 +26,36 @@ namespace ProjektGrupowy
 
         private void OcenaSave_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Do dodania funkcja robiąca update w tabeli z ocenami");
-            
+            //MessageBox.Show("Do dodania funkcja robiąca update w tabeli z ocenami");
+            int ocena = Int32.Parse(OcenaBox.Text);
+
+            string ConnectionString = "Server=ProjektGrupowy.mssql.somee.com; Database=ProjektGrupowy; User ID=derri_SQLLogin_1; Password=pe2fjz4yh9;";
+            string UpdateOcena =
+                "update Ocena " +
+                "set Ocena = " + ocena +
+                "where Ocena.ID_plyta = " + ID_Selected_MPlyta +" and Ocena.ID_user = " + Program.ID_zalogowanego;
+
+            SqlConnection Conn = new SqlConnection(ConnectionString);
+            Conn.Open();
+            SqlCommand DataCmd = new SqlCommand(UpdateOcena, Conn);
+            DataCmd.ExecuteNonQuery();
+            Conn.Close();
+            MOcenyList.Items.Clear();
+            this.Plyty_uzytkownika_Show();
         }
 
         private void MOcenyList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MessageBox.Show("Do dodania funkcja która przeniesie zaznaczony rekord do pól po prawej");
+            //MessageBox.Show("Do dodania funkcja która przeniesie zaznaczony rekord do pól po prawej");
+
+            PlytaBox.Text = MOcenyList.SelectedItems[0].SubItems[1].Text;
+            ZespolBox.Text = MOcenyList.SelectedItems[0].SubItems[2].Text;
+            GatunekBox.Text = MOcenyList.SelectedItems[0].SubItems[3].Text;
+            RokBox.Text = MOcenyList.SelectedItems[0].SubItems[4].Text;
+            SciezkiBox.Text = MOcenyList.SelectedItems[0].SubItems[5].Text;
+            OcenaBox.Text = MOcenyList.SelectedItems[0].SubItems[6].Text;
+            ID_Selected_MPlyta = Int32.Parse(MOcenyList.SelectedItems[0].SubItems[0].Text);
+            //MessageBox.Show(ID_Selected_MPlyta.ToString());
         }
 
         private void ZSzukaj_Click(object sender, EventArgs e)
@@ -205,6 +231,86 @@ namespace ProjektGrupowy
             PanelTabControl.SelectedTab = TabPlyty;
         }
 
+        public void Dane_uzytkownika_Show()
+        {
+            string Nick, Imie, Nazwisko, Kraj, Miasto, Mail, Status;
+            DateTime Data_ur;
+            int Plec;
+            int ID = Program.ID_zalogowanego;
+            string ConnectionString = "Server=ProjektGrupowy.mssql.somee.com; Database=ProjektGrupowy; User ID=derri_SQLLogin_1; Password=pe2fjz4yh9;";
 
+            string GetDane_user= 
+                "SELECT Users.Nick, Users.Imie, Users.Nazwisko, Users.Kraj, Users.Miasto, Users.Mail, Status.Nazwa, Users.Data_urodzenia, Users.Id_plec " +
+                "FROM Users INNER JOIN Status on Status.ID_status = Users.ID_status " +
+                "WHERE Users.ID_user = " + ID;
+
+            SqlConnection Conn = new SqlConnection(ConnectionString);
+            Conn.Open();
+
+            SqlCommand DataCmd = new SqlCommand(GetDane_user, Conn);
+            SqlDataReader Data = DataCmd.ExecuteReader();
+            Data.Read();
+            Nick = Data.GetString(0);
+            Imie = Data.GetString(1);
+            Nazwisko = Data.GetString(2);
+            Kraj = Data.GetString(3);
+            Miasto = Data.GetString(4);
+            Mail = Data.GetString(5);
+            Status = Data.GetString(6);
+            Data_ur = Data.GetDateTime(7);
+            Plec = Data.GetInt32(8);
+
+            NickBox.Text = Nick;
+            ImieBox.Text = Imie;
+            NazwiskoBox.Text = Nazwisko;
+            KrajBox.Text = Kraj;
+            MiastoBox.Text = Miasto;
+            MailBox.Text = Mail;
+            StatusBox.Text = Status;
+            DataBox.Value = Data_ur;
+            PlecBox.SelectedIndex = Plec - 1;
+
+            Data.Close();
+            Conn.Close(); 
+        }
+
+        public void Plyty_uzytkownika_Show()
+        {
+            int ID = Program.ID_zalogowanego;
+            string ConnectionString = "Server=ProjektGrupowy.mssql.somee.com; Database=ProjektGrupowy; User ID=derri_SQLLogin_1; Password=pe2fjz4yh9;";
+            string Plyta, Zespol, Gatunek;
+            int  Rok, Sciezki, Ocena, ID_Plyta;
+
+            string GetDane_plyty =
+                "Select Plyta.Nazwa, Zespol.Nazwa, Gatunek.Nazwa, Plyta.Rok_wydania, Plyta.Ilosc_sciezek, Ocena.Ocena, Ocena.ID_plyta " +
+                "from Ocena " +
+                "inner join Plyta on Plyta.ID_plyta = Ocena.ID_plyta " +
+                "inner join Zespol on Zespol.ID_zespol = Plyta.ID_zespol " +
+                "inner join Gatunek on Gatunek.ID_gatunek = Plyta.ID_gatunek " +
+                "where Ocena.ID_user = " + ID;
+            SqlConnection Conn = new SqlConnection(ConnectionString);
+            Conn.Open();
+
+            SqlCommand DataCmd = new SqlCommand(GetDane_plyty, Conn);
+            SqlDataReader Data = DataCmd.ExecuteReader();
+            while (Data.Read())
+            {
+                //Data.Read();
+                Plyta = Data.GetString(0);
+                Zespol = Data.GetString(1);
+                Gatunek = Data.GetString(2);
+                Rok = Data.GetInt32(3);
+                Sciezki = Data.GetInt32(4);
+                Ocena = Data.GetInt32(5);
+                ID_Plyta = Data.GetInt32(6);
+
+                MOcenyList.Items.Add(new ListViewItem(new[] { ID_Plyta.ToString(), Plyta, Zespol, Gatunek, Rok.ToString(), Sciezki.ToString(), Ocena.ToString()}));
+
+
+            }
+
+            Data.Close();
+            Conn.Close(); 
+        }
     }
 }

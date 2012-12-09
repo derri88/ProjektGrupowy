@@ -168,6 +168,7 @@
             this.PNazwaCheck = new System.Windows.Forms.CheckBox();
             this.PNazwaBox = new System.Windows.Forms.TextBox();
             this.PNazwa = new System.Windows.Forms.Label();
+            this.IDV = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PanelTabControl.SuspendLayout();
             this.TabMojeOceny.SuspendLayout();
             this.DaneGroup.SuspendLayout();
@@ -277,6 +278,7 @@
             // 
             // NickBox
             // 
+            this.NickBox.Enabled = false;
             this.NickBox.Location = new System.Drawing.Point(107, 17);
             this.NickBox.Name = "NickBox";
             this.NickBox.Size = new System.Drawing.Size(185, 20);
@@ -453,7 +455,6 @@
             // 
             this.OcenaBox.FormattingEnabled = true;
             this.OcenaBox.Items.AddRange(new object[] {
-            "Brak",
             "1",
             "2",
             "3",
@@ -558,16 +559,19 @@
             // MOcenyList
             // 
             this.MOcenyList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.IDV,
             this.PlytaV,
             this.ZespolV,
             this.GatunekV,
             this.RokV,
             this.SciezkiV,
             this.OcenaV});
+            this.MOcenyList.FullRowSelect = true;
             this.MOcenyList.HideSelection = false;
             this.MOcenyList.Location = new System.Drawing.Point(9, 19);
+            this.MOcenyList.MultiSelect = false;
             this.MOcenyList.Name = "MOcenyList";
-            this.MOcenyList.Size = new System.Drawing.Size(429, 268);
+            this.MOcenyList.Size = new System.Drawing.Size(435, 268);
             this.MOcenyList.TabIndex = 0;
             this.MOcenyList.UseCompatibleStateImageBehavior = false;
             this.MOcenyList.View = System.Windows.Forms.View.Details;
@@ -575,32 +579,39 @@
             // 
             // PlytaV
             // 
+            this.PlytaV.DisplayIndex = 0;
             this.PlytaV.Text = "Płyta";
             this.PlytaV.Width = 82;
             // 
             // ZespolV
             // 
+            this.ZespolV.DisplayIndex = 1;
             this.ZespolV.Text = "Zespół";
             this.ZespolV.Width = 77;
             // 
             // GatunekV
             // 
+            this.GatunekV.DisplayIndex = 2;
             this.GatunekV.Text = "Gatunek";
-            this.GatunekV.Width = 78;
+            this.GatunekV.Width = 74;
             // 
             // RokV
             // 
+            this.RokV.DisplayIndex = 3;
             this.RokV.Text = "Rok wydania";
             this.RokV.Width = 77;
             // 
             // SciezkiV
             // 
+            this.SciezkiV.DisplayIndex = 4;
             this.SciezkiV.Text = "Ścieżki";
             this.SciezkiV.Width = 51;
             // 
             // OcenaV
             // 
+            this.OcenaV.DisplayIndex = 5;
             this.OcenaV.Text = "Ocena";
+            this.OcenaV.Width = 67;
             // 
             // TabZespoly
             // 
@@ -1546,6 +1557,12 @@
             this.PNazwa.Text = "Nazwa";
             this.PNazwa.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // IDV
+            // 
+            this.IDV.DisplayIndex = 6;
+            this.IDV.Text = "ID";
+            this.IDV.Width = 0;
+            // 
             // Panel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1725,6 +1742,7 @@
         private System.Windows.Forms.Button ZCancel;
         private System.Windows.Forms.Button PCancel;
         private System.Windows.Forms.Button ZPlytyButton;
+        private System.Windows.Forms.ColumnHeader IDV;
 
         //private void InitializeComponent(bool parametr)
         //{

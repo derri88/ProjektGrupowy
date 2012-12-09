@@ -11,6 +11,7 @@ namespace ProjektGrupowy
         /// The main entry point for the application.
         /// </summary>
         public static Start Start1;
+        public static int ID_zalogowanego = 0;
         [STAThread]
         public static void Main()
         {

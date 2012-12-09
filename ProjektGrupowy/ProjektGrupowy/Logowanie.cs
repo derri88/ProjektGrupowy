@@ -49,10 +49,11 @@ namespace ProjektGrupowy
             {
                 ID = Data.GetInt32(0);
                 Data.Close();
-                Conn.Close();
+                Conn.Close();             
                 return ID;
-            }
+            }            
             else return 0;
+            
         }
         /*Inny sposob na logowanie (uboższy bo nie zwraca ID klienta, co nie pozwala rozkminic kto jest zalogowany - wiec nie do wykorzystania, ale narazie niech lezy)
         public bool UserCheck()
@@ -86,10 +87,13 @@ namespace ProjektGrupowy
         */
         private void LoginOK_Click(object sender, EventArgs e)
         {
-            if (DaneLogowania() != 0)
+            Program.ID_zalogowanego = DaneLogowania();
+            if (Program.ID_zalogowanego != 0)
             {
                 Panel Panel = new Panel();
                 Panel.Show();
+                Panel.Dane_uzytkownika_Show();
+                Panel.Plyty_uzytkownika_Show();
                 Program.Start1.Hide();
                 this.Close();
             }
