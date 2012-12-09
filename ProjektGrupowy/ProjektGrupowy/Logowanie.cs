@@ -94,6 +94,7 @@ namespace ProjektGrupowy
                 Panel.Show();
                 Panel.Dane_uzytkownika_Show();
                 Panel.Plyty_uzytkownika_Show();
+                Panel.MOcenyList.Items[0].Selected = true;
                 Program.Start1.Hide();
                 this.Close();
             }

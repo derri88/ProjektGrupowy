@@ -47,7 +47,7 @@ namespace ProjektGrupowy
         private void MOcenyList_SelectedIndexChanged(object sender, EventArgs e)
         {
             //MessageBox.Show("Do dodania funkcja która przeniesie zaznaczony rekord do pól po prawej");
-
+            
             PlytaBox.Text = MOcenyList.SelectedItems[0].SubItems[1].Text;
             ZespolBox.Text = MOcenyList.SelectedItems[0].SubItems[2].Text;
             GatunekBox.Text = MOcenyList.SelectedItems[0].SubItems[3].Text;

@@ -1621,7 +1621,7 @@
         private System.Windows.Forms.Label Rok;
         private System.Windows.Forms.Label Gatunek;
         private System.Windows.Forms.TextBox RokBox;
-        private System.Windows.Forms.ListView MOcenyList;
+        public System.Windows.Forms.ListView MOcenyList;
         private System.Windows.Forms.ColumnHeader PlytaV;
         private System.Windows.Forms.ColumnHeader ZespolV;
         private System.Windows.Forms.ColumnHeader GatunekV;
