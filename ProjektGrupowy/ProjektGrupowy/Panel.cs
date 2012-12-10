@@ -271,9 +271,10 @@ namespace ProjektGrupowy
             else { Miasto = Data.GetString(4); }
             Mail = Data.GetString(5);
             Status = Data.GetString(6);
+
             if (Data.IsDBNull(7))
             {
-                //DataBox.Enabled = false;
+                DataBox.Checked = false;
                 DataBox.Format = DateTimePickerFormat.Custom;
                 DataBox.CustomFormat = " ";
             }
@@ -334,6 +335,25 @@ namespace ProjektGrupowy
 
             Data.Close();
             Conn.Close(); 
+        }
+
+        private void DaneSave_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DataBox_ValueChanged(object sender, EventArgs e)
+        {
+            if (DataBox.Checked == true)
+            {
+                DataBox.Format = DateTimePickerFormat.Short;
+            }
+
+            else
+            {
+                DataBox.Format = DateTimePickerFormat.Custom;
+                DataBox.CustomFormat = " ";
+            }
         }
 
     }

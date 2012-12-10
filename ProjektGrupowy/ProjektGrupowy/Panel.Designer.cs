@@ -66,6 +66,7 @@
             this.Gatunek = new System.Windows.Forms.Label();
             this.RokBox = new System.Windows.Forms.TextBox();
             this.MOcenyList = new System.Windows.Forms.ListView();
+            this.IDV = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PlytaV = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ZespolV = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.GatunekV = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -168,7 +169,6 @@
             this.PNazwaCheck = new System.Windows.Forms.CheckBox();
             this.PNazwaBox = new System.Windows.Forms.TextBox();
             this.PNazwa = new System.Windows.Forms.Label();
-            this.IDV = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PanelTabControl.SuspendLayout();
             this.TabMojeOceny.SuspendLayout();
             this.DaneGroup.SuspendLayout();
@@ -257,6 +257,7 @@
             this.DaneSave.TabIndex = 18;
             this.DaneSave.Text = "Zapisz zmiany";
             this.DaneSave.UseVisualStyleBackColor = true;
+            this.DaneSave.Click += new System.EventHandler(this.DaneSave_Click);
             // 
             // Nick
             // 
@@ -361,8 +362,10 @@
             // 
             this.DataBox.Location = new System.Drawing.Point(107, 93);
             this.DataBox.Name = "DataBox";
+            this.DataBox.ShowCheckBox = true;
             this.DataBox.Size = new System.Drawing.Size(185, 20);
             this.DataBox.TabIndex = 7;
+            this.DataBox.ValueChanged += new System.EventHandler(this.DataBox_ValueChanged);
             // 
             // MailBox
             // 
@@ -576,6 +579,12 @@
             this.MOcenyList.UseCompatibleStateImageBehavior = false;
             this.MOcenyList.View = System.Windows.Forms.View.Details;
             this.MOcenyList.SelectedIndexChanged += new System.EventHandler(this.MOcenyList_SelectedIndexChanged);
+            // 
+            // IDV
+            // 
+            this.IDV.DisplayIndex = 6;
+            this.IDV.Text = "ID";
+            this.IDV.Width = 0;
             // 
             // PlytaV
             // 
@@ -1556,12 +1565,6 @@
             this.PNazwa.TabIndex = 4;
             this.PNazwa.Text = "Nazwa";
             this.PNazwa.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // IDV
-            // 
-            this.IDV.DisplayIndex = 6;
-            this.IDV.Text = "ID";
-            this.IDV.Width = 0;
             // 
             // Panel
             // 
