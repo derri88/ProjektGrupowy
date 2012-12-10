@@ -254,12 +254,28 @@ namespace ProjektGrupowy
             Data.Read();
             Nick = Data.GetString(0);
             Imie = Data.GetString(1);
-            Nazwisko = Data.GetString(2);
-            Kraj = Data.GetString(3);
-            Miasto = Data.GetString(4);
+            if (Data.IsDBNull(2))
+            {
+                Nazwisko = null;
+            }
+            else { Nazwisko = Data.GetString(2); ; }
+            if (Data.IsDBNull(3))
+            {
+                Kraj = null;
+            }
+            else { Kraj = Data.GetString(3); }
+            if (Data.IsDBNull(4))
+            {
+                Miasto = null;
+            }
+            else { Miasto = Data.GetString(4); }
             Mail = Data.GetString(5);
             Status = Data.GetString(6);
-            Data_ur = Data.GetDateTime(7);
+            if (Data.IsDBNull(7))
+            {
+                Data_ur = new DateTime(1753, 01, 01);
+            }
+            else { Data_ur = Data.GetDateTime(7); }
             Plec = Data.GetInt32(8);
 
             NickBox.Text = Nick;
@@ -314,5 +330,6 @@ namespace ProjektGrupowy
             Data.Close();
             Conn.Close(); 
         }
+
     }
 }
