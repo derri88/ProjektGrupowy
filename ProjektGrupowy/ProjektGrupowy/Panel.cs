@@ -24,9 +24,33 @@ namespace ProjektGrupowy
             InitializeComponent();
         }
 
-        private void DaneSave_Click(object sender, EventArgs e)
+        public enum TypeOfAction
+        {
+            Select,
+            Update,
+            Count
+        };
+
+        public SqlDataReader Connect(TypeOfAction TOA, string Query) // Funcka otwierajaca polaczenie i w zależności od pożadanej akcji wykonuje różny kod.
         {
             string ConnectionString = "Server=ProjektGrupowy.mssql.somee.com; Database=ProjektGrupowy; User ID=derri_SQLLogin_1; Password=pe2fjz4yh9;";
+            SqlConnection Conn = new SqlConnection(ConnectionString);
+            Conn.Open();
+
+            SqlDataReader Data = null; ;
+
+            if(TOA == TypeOfAction.Update)
+            {
+                SqlCommand DataCmd = new SqlCommand(Query, Conn);
+                DataCmd.ExecuteNonQuery();
+            }
+
+            Conn.Close();
+            return Data;
+        }
+
+        private void DaneSave_Click(object sender, EventArgs e)
+        {
             string UpdateUser =    "update Users " +
                                     "set " + 
                                     "Imie = '" + ImieBox.Text +
@@ -38,11 +62,7 @@ namespace ProjektGrupowy
                                     "', Miasto = '" + MiastoBox.Text + "' " + 
                                     "where Users.ID_user = " + Program.ID_zalogowanego;
 
-            SqlConnection Conn = new SqlConnection(ConnectionString);
-            Conn.Open();
-            SqlCommand DataCmd = new SqlCommand(UpdateUser, Conn);
-            DataCmd.ExecuteNonQuery();
-            Conn.Close();
+            SqlDataReader Data = Connect(TypeOfAction.Update, UpdateUser);
             MessageBox.Show("Dane zaaktualizowane");
 
         }
@@ -50,19 +70,15 @@ namespace ProjektGrupowy
         private void OcenaSave_Click(object sender, EventArgs e)
         {
             //MessageBox.Show("Do dodania funkcja robiąca update w tabeli z ocenami");
-            int ocena = Int32.Parse(OcenaBox.Text);
+            //int ocena = Int32.Parse(OcenaBox.Text);
 
-            string ConnectionString = "Server=ProjektGrupowy.mssql.somee.com; Database=ProjektGrupowy; User ID=derri_SQLLogin_1; Password=pe2fjz4yh9;";
             string UpdateOcena =
                 "update Ocena " +
-                "set Ocena = " + ocena +
+                "set Ocena = " + OcenaBox.Text + //+ ocena + //!!! DAL KUBY!!!Nie musisz "przerabiac oceny z txt w textbox na int, bo do zapytania i tak tylko txt idzie :)/
                 "where Ocena.ID_plyta = " + ID_Selected_MPlyta +" and Ocena.ID_user = " + Program.ID_zalogowanego;
 
-            SqlConnection Conn = new SqlConnection(ConnectionString);
-            Conn.Open();
-            SqlCommand DataCmd = new SqlCommand(UpdateOcena, Conn);
-            DataCmd.ExecuteNonQuery();
-            Conn.Close();
+            SqlDataReader Data = Connect(TypeOfAction.Update, UpdateOcena);
+
             MOcenyList.Items.Clear();
             this.Plyty_uzytkownika_Show();
         }
