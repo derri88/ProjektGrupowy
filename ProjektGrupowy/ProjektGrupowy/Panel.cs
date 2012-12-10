@@ -273,9 +273,15 @@ namespace ProjektGrupowy
             Status = Data.GetString(6);
             if (Data.IsDBNull(7))
             {
-                Data_ur = new DateTime(1753, 01, 01);
+                //DataBox.Enabled = false;
+                DataBox.Format = DateTimePickerFormat.Custom;
+                DataBox.CustomFormat = " ";
             }
-            else { Data_ur = Data.GetDateTime(7); }
+            else 
+            {
+                Data_ur = Data.GetDateTime(7);
+                DataBox.Value = Data_ur;
+            }
             Plec = Data.GetInt32(8);
 
             NickBox.Text = Nick;
@@ -285,7 +291,6 @@ namespace ProjektGrupowy
             MiastoBox.Text = Miasto;
             MailBox.Text = Mail;
             StatusBox.Text = Status;
-            DataBox.Value = Data_ur;
             PlecBox.SelectedIndex = Plec - 1;
 
             Data.Close();
