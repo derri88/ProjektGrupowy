@@ -24,6 +24,29 @@ namespace ProjektGrupowy
             InitializeComponent();
         }
 
+        private void DaneSave_Click(object sender, EventArgs e)
+        {
+            string ConnectionString = "Server=ProjektGrupowy.mssql.somee.com; Database=ProjektGrupowy; User ID=derri_SQLLogin_1; Password=pe2fjz4yh9;";
+            string UpdateUser =    "update Users " +
+                                    "set " + 
+                                    "Imie = '" + ImieBox.Text +
+                                    "', Nazwisko = '" + NazwiskoBox.Text +
+                                    "', Data_urodzenia = '" + DataBox.Text  +
+                                    "', ID_plec = '" + (PlecBox.SelectedIndex+1) +
+                                    "', Mail = '" + MailBox.Text +
+                                    "', Kraj = '" + KrajBox.Text +
+                                    "', Miasto = '" + MiastoBox.Text + "' " + 
+                                    "where Users.ID_user = " + Program.ID_zalogowanego;
+
+            SqlConnection Conn = new SqlConnection(ConnectionString);
+            Conn.Open();
+            SqlCommand DataCmd = new SqlCommand(UpdateUser, Conn);
+            DataCmd.ExecuteNonQuery();
+            Conn.Close();
+            MessageBox.Show("Dane zaaktualizowane");
+
+        }
+
         private void OcenaSave_Click(object sender, EventArgs e)
         {
             //MessageBox.Show("Do dodania funkcja robiąca update w tabeli z ocenami");
@@ -337,11 +360,6 @@ namespace ProjektGrupowy
             Conn.Close(); 
         }
 
-        private void DaneSave_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void DataBox_ValueChanged(object sender, EventArgs e)
         {
             if (DataBox.Checked == true)
@@ -355,6 +373,9 @@ namespace ProjektGrupowy
                 DataBox.CustomFormat = " ";
             }
         }
+
+
+
 
     }
 }
