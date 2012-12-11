@@ -39,7 +39,7 @@ namespace ProjektGrupowy
 
             SqlDataReader Data;
 
-            if (TOA == TypeOfAction.Update)// Przy update nie zamykać SqlDataReadera! bo jego wartosc == null!!!
+            if (TOA == TypeOfAction.Update)// Przy update nie zamykać SqlDataReadera!(w uzywanej funkcji) bo jego wartosc == null!!!
             {
                 SqlCommand DataCmd = new SqlCommand(Query, Conn);
                 DataCmd.ExecuteNonQuery();
@@ -367,7 +367,7 @@ namespace ProjektGrupowy
         public void Plyty_uzytkownika_Show()
         {
             int ID = Program.ID_zalogowanego;
-            //string ConnectionString = "Server=ProjektGrupowy.mssql.somee.com; Database=ProjektGrupowy; User ID=derri_SQLLogin_1; Password=pe2fjz4yh9;";
+
             string Plyta, Zespol, Gatunek;
             int  Rok, Sciezki, Ocena, ID_Plyta;
 
@@ -378,11 +378,6 @@ namespace ProjektGrupowy
                 "inner join Zespol on Zespol.ID_zespol = Plyta.ID_zespol " +
                 "inner join Gatunek on Gatunek.ID_gatunek = Plyta.ID_gatunek " +
                 "where Ocena.ID_user = " + ID;
-            //SqlConnection Conn = new SqlConnection(ConnectionString);
-            //Conn.Open();
-
-            //SqlCommand DataCmd = new SqlCommand(GetDane_plyty, Conn);
-            //SqlDataReader Data = DataCmd.ExecuteReader();
 
             SqlDataReader Data = Connect(TypeOfAction.Select, GetDane_plyty);
 
