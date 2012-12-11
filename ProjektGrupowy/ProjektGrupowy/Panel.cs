@@ -13,6 +13,9 @@ namespace ProjektGrupowy
     public partial class Panel : Form
     {
         public static int ID_Selected_MPlyta = 0;
+        public string NickData, ImieData, NazwiskoData, KrajData, MiastoData, MailData, StatusData;
+        public DateTime Data_ur;
+        public int PlecData;
 
         public Panel()
         {
@@ -85,19 +88,33 @@ namespace ProjektGrupowy
 
         private void DaneSave_Click(object sender, EventArgs e)
         {
-            string UpdateUser =    "update Users " +
-                                    "set " + 
-                                    "Imie = '" + ImieBox.Text +
-                                    "', Nazwisko = '" + NazwiskoBox.Text +
-                                    "', Data_urodzenia = '" + DataBox.Text  +
-                                    "', ID_plec = '" + (PlecBox.SelectedIndex+1) +
-                                    "', Mail = '" + MailBox.Text +
-                                    "', Kraj = '" + KrajBox.Text +
-                                    "', Miasto = '" + MiastoBox.Text + "' " + 
-                                    "where Users.ID_user = " + Program.ID_zalogowanego;
+            if (ImieBox.Text == ImieData &&
+                NazwiskoBox.Text == NazwiskoData &&
+                DataBox.Value == Data_ur &&
+                PlecBox.SelectedIndex == (PlecData - 1) &&
+                MailBox.Text == MailData &&
+                KrajBox.Text == KrajData &&
+                MiastoBox.Text == MiastoData)
+            {
+                MessageBox.Show("Nie wprowadzono żadnych zmian, nic nie zaaktualizowano.");
+            }
+            else
+            {
+                string UpdateUser = "update Users " +
+                                        "set " +
+                                        "Imie = '" + ImieBox.Text +
+                                        "', Nazwisko = '" + NazwiskoBox.Text +
+                                        "', Data_urodzenia = '" + DataBox.Text +
+                                        "', ID_plec = '" + (PlecBox.SelectedIndex + 1) +
+                                        "', Mail = '" + MailBox.Text +
+                                        "', Kraj = '" + KrajBox.Text +
+                                        "', Miasto = '" + MiastoBox.Text + "' " +
+                                        "where Users.ID_user = " + Program.ID_zalogowanego;
 
-            SqlDataReader Data = Connect(TypeOfAction.Update, UpdateUser);
-            MessageBox.Show("Dane zaaktualizowane");
+                SqlDataReader Data = Connect(TypeOfAction.Update, UpdateUser);
+                Dane_uzytkownika_Show();
+                MessageBox.Show("Dane zaaktualizowane");
+            }
         }
 
         private void OcenaSave_Click(object sender, EventArgs e)
@@ -324,11 +341,11 @@ namespace ProjektGrupowy
 
         public void Dane_uzytkownika_Show()
         {
-            string Nick, Imie, Nazwisko, Kraj, Miasto, Mail, Status;
-            DateTime Data_ur;
-            int Plec;
+            //string Nick, Imie, Nazwisko, Kraj, Miasto, Mail, Status;
+            //DateTime Data_ur;
+            //int Plec;
             int ID = Program.ID_zalogowanego;
-            string GetDane_user= 
+            string GetDane_user =
                 "SELECT Users.Nick, Users.Imie, Users.Nazwisko, Users.Kraj, Users.Miasto, Users.Mail, Status.Nazwa, Users.Data_urodzenia, Users.Id_plec " +
                 "FROM Users INNER JOIN Status on Status.ID_status = Users.ID_status " +
                 "WHERE Users.ID_user = " + ID;
@@ -336,25 +353,25 @@ namespace ProjektGrupowy
             SqlDataReader Data = Connect(TypeOfAction.Select, GetDane_user);
 
             Data.Read();
-            Nick = Data.GetString(0);
-            Imie = Data.GetString(1);
+            NickData = Data.GetString(0);
+            ImieData = Data.GetString(1);
             if (Data.IsDBNull(2))
             {
                 Nazwisko = null;
             }
-            else { Nazwisko = Data.GetString(2); ; }
+            else { NazwiskoData = Data.GetString(2); ; }
             if (Data.IsDBNull(3))
             {
                 Kraj = null;
             }
-            else { Kraj = Data.GetString(3); }
+            else { KrajData = Data.GetString(3); }
             if (Data.IsDBNull(4))
             {
                 Miasto = null;
             }
-            else { Miasto = Data.GetString(4); }
-            Mail = Data.GetString(5);
-            Status = Data.GetString(6);
+            else { MiastoData = Data.GetString(4); }
+            MailData = Data.GetString(5);
+            StatusData = Data.GetString(6);
 
             if (Data.IsDBNull(7))
             {
@@ -362,21 +379,21 @@ namespace ProjektGrupowy
                 DataBox.Format = DateTimePickerFormat.Custom;
                 DataBox.CustomFormat = " ";
             }
-            else 
+            else
             {
                 Data_ur = Data.GetDateTime(7);
                 DataBox.Value = Data_ur;
             }
-            Plec = Data.GetInt32(8);
+            PlecData = Data.GetInt32(8);
 
-            NickBox.Text = Nick;
-            ImieBox.Text = Imie;
-            NazwiskoBox.Text = Nazwisko;
-            KrajBox.Text = Kraj;
-            MiastoBox.Text = Miasto;
-            MailBox.Text = Mail;
-            StatusBox.Text = Status;
-            PlecBox.SelectedIndex = Plec - 1;
+            NickBox.Text = NickData;
+            ImieBox.Text = ImieData;
+            NazwiskoBox.Text = NazwiskoData;
+            KrajBox.Text = KrajData;
+            MiastoBox.Text = MiastoData;
+            MailBox.Text = MailData;
+            StatusBox.Text = StatusData;
+            PlecBox.SelectedIndex = PlecData - 1;
 
             Data.Close();
         }
