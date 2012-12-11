@@ -131,11 +131,28 @@ namespace ProjektGrupowy
             }
             //MessageBox.Show(ID_Selected_MPlyta.ToString());
         }
-
+        
         private void ZSzukaj_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Do dodania funkcja która zapełni wynikami wyszukiwania listę po prawej, i wyświetli w grupie zespół pierwszy item z listy");
-            ZespolyList.View = View.Details;
+            /*string Nazwa = ZNazwaBox.Text;        /// funkcja do skończenia :)
+            string Gatunek = ZGatunek.Text;
+            string RokSt = ZRokStBox.Text;
+            string RokEnd = ZRokEndBox.Text;
+            //string RokStOption = RokStGroup.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Text;
+            //string RokEndOption = RokEndGroup.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Text;
+
+            string GetZespoly = "SELECT ID_Zespol, Nazwa, Gatunek, Rok_start, Rok_end, Count(Id_plyta) FROM Zespol " +
+                                "INNER JOIN Plyty on Plyty.Id_Zespol = Zespol.Id_Zespol " +
+                                "INNER JOIN Gatunek on Gatunek.Id_Gatunek = Zespol.Id_Gatunek " +
+                                "GROUP BY Plyty.ID_Plyta" +
+                                "WHERE Gatunek.Nazwa = " + Gatunek;
+                                
+            SqlDataReader Data = Connect(TypeOfAction.Select, GetZespoly);
+            Data.Read();
+            MessageBox.Show(Data.GetString(1));
+            Data.Close();
+             * */
         }
 
         private void ZEditButton_Click(object sender, EventArgs e)
@@ -217,7 +234,7 @@ namespace ProjektGrupowy
 
         private void TabZespoly_Click(object sender, EventArgs e)
         {
-            TabZespoly.Invalidate();
+
         }
 
         private void TabPlyty_Click(object sender, EventArgs e)
@@ -410,7 +427,35 @@ namespace ProjektGrupowy
             }
         }
 
+        private void DropDownItems_Gatunek(ComboBox CB) // Pobiera gatunki jako itemy do ComboBoxow
+        {
+            string GetGatunki = "SELECT Nazwa FROM Gatunek";
+            SqlDataReader Data = Connect(TypeOfAction.Select, GetGatunki);
+            while (Data.Read())
+            {
+                CB.Items.Add(Data.GetString(0));
+            }
+            Data.Close();
+        }
 
+        private void DropDownItems_Rok(ComboBox CB) // Rok jako item do ComboBoxow
+        {
+            for (int i = 1900; i<= DateTime.Now.Year; i++)
+            {
+                CB.Items.Add(i);
+            }
+
+        }
+
+        private void TabZespoly_Enter(object sender, EventArgs e) // Uzupełnienie ComboBoxów
+        {
+            DropDownItems_Gatunek(ZGatunekBox);
+            DropDownItems_Gatunek(ZGatunekBox1);
+            DropDownItems_Rok(ZRokEndBox);
+            DropDownItems_Rok(ZRokStBox);
+            DropDownItems_Rok(ZRokEndBox1);
+            DropDownItems_Rok(ZRokStBox1);
+        }
 
 
     }

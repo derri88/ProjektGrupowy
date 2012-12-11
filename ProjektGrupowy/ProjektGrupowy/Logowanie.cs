@@ -122,5 +122,13 @@ namespace ProjektGrupowy
             
         }
 
+        private void HasloBox_KeyDown(object sender, KeyEventArgs e) // logowanie po wciśnięciu ENTERa
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.LoginOK_Click((object)sender, (EventArgs)e);
+            }
+        }
+
     }
 }

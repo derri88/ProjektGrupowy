@@ -103,7 +103,7 @@
             this.RadioEnd1 = new System.Windows.Forms.RadioButton();
             this.RadioEnd5 = new System.Windows.Forms.RadioButton();
             this.RadioEnd3 = new System.Windows.Forms.RadioButton();
-            this.ZRokBox = new System.Windows.Forms.ComboBox();
+            this.ZRokEndBox = new System.Windows.Forms.ComboBox();
             this.RokStGroup = new System.Windows.Forms.GroupBox();
             this.RadioSt4 = new System.Windows.Forms.RadioButton();
             this.RadioSt2 = new System.Windows.Forms.RadioButton();
@@ -634,6 +634,7 @@
             this.TabZespoly.Text = "Zespoły";
             this.TabZespoly.UseVisualStyleBackColor = true;
             this.TabZespoly.Click += new System.EventHandler(this.TabZespoly_Click);
+            this.TabZespoly.Enter += new System.EventHandler(this.TabZespoly_Enter);
             // 
             // ZespolyList
             // 
@@ -654,26 +655,27 @@
             // VNazwa
             // 
             this.VNazwa.Text = "Nazwa";
-            this.VNazwa.Width = 63;
+            this.VNazwa.Width = 64;
             // 
             // VGatunek
             // 
             this.VGatunek.Text = "Gatunek";
-            this.VGatunek.Width = 70;
+            this.VGatunek.Width = 75;
             // 
             // VRSt
             // 
             this.VRSt.Text = "Rok założenia";
-            this.VRSt.Width = 68;
+            this.VRSt.Width = 97;
             // 
             // VREnd
             // 
             this.VREnd.Text = "Rok końcowy";
-            this.VREnd.Width = 52;
+            this.VREnd.Width = 75;
             // 
             // VCount
             // 
             this.VCount.Text = "Liczba płyt";
+            this.VCount.Width = 76;
             // 
             // ZespolGroup
             // 
@@ -834,7 +836,7 @@
             // 
             this.ZSzukajGroup.Controls.Add(this.ZSzukaj);
             this.ZSzukajGroup.Controls.Add(this.RokEndGroup);
-            this.ZSzukajGroup.Controls.Add(this.ZRokBox);
+            this.ZSzukajGroup.Controls.Add(this.ZRokEndBox);
             this.ZSzukajGroup.Controls.Add(this.RokStGroup);
             this.ZSzukajGroup.Controls.Add(this.ZRokCheck);
             this.ZSzukajGroup.Controls.Add(this.ZRokStBox);
@@ -933,13 +935,13 @@
             this.RadioEnd3.Text = "=";
             this.RadioEnd3.UseVisualStyleBackColor = true;
             // 
-            // ZRokBox
+            // ZRokEndBox
             // 
-            this.ZRokBox.FormattingEnabled = true;
-            this.ZRokBox.Location = new System.Drawing.Point(87, 154);
-            this.ZRokBox.Name = "ZRokBox";
-            this.ZRokBox.Size = new System.Drawing.Size(157, 21);
-            this.ZRokBox.TabIndex = 17;
+            this.ZRokEndBox.FormattingEnabled = true;
+            this.ZRokEndBox.Location = new System.Drawing.Point(87, 154);
+            this.ZRokEndBox.Name = "ZRokEndBox";
+            this.ZRokEndBox.Size = new System.Drawing.Size(157, 21);
+            this.ZRokEndBox.TabIndex = 17;
             // 
             // RokStGroup
             // 
@@ -1647,7 +1649,7 @@
         private System.Windows.Forms.RadioButton RadioEnd1;
         private System.Windows.Forms.RadioButton RadioEnd5;
         private System.Windows.Forms.RadioButton RadioEnd3;
-        private System.Windows.Forms.ComboBox ZRokBox;
+        private System.Windows.Forms.ComboBox ZRokEndBox;
         private System.Windows.Forms.GroupBox RokStGroup;
         private System.Windows.Forms.RadioButton RadioSt4;
         private System.Windows.Forms.RadioButton RadioSt2;

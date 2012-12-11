@@ -99,6 +99,7 @@
             this.HasloBox.PasswordChar = '*';
             this.HasloBox.Size = new System.Drawing.Size(194, 20);
             this.HasloBox.TabIndex = 2;
+            this.HasloBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HasloBox_KeyDown);
             // 
             // Logowanie
             // 
