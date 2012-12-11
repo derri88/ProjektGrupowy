@@ -25,8 +25,7 @@ namespace ProjektGrupowy
 
         public int DaneLogowania() //Działa z oficjalną bazą (konstrukcją bazy), ale adres bazy i jej nazwa to wartości lokalne.
         {
-            int ID, count;
-            string ConnectionString = "Server=ProjektGrupowy.mssql.somee.com; Database=ProjektGrupowy; User ID=derri_SQLLogin_1; Password=pe2fjz4yh9;";
+            int ID, IleRek = 1;
             string IleRekordow = "SELECT COUNT (*) " +
                                 "FROM Users INNER JOIN User_password ON Users.ID_user = User_password.ID_user " +
                                 "WHERE Users.Nick = '" + LoginBox.Text + "'" +
@@ -37,22 +36,24 @@ namespace ProjektGrupowy
                                 "WHERE Users.Nick = '" + LoginBox.Text + "'" +
                                 "AND User_password.Password = '" + HasloBox.Text + "'";
 
-            SqlConnection Conn = new SqlConnection(ConnectionString);
-            Conn.Open();
-            SqlCommand DataCmd = new SqlCommand(CheckUser, Conn);
-            SqlCommand IleRek = new SqlCommand(IleRekordow, Conn);
+            Panel Panel = new Panel();
+            SqlDataReader DataUser = Panel.Connect(Panel.TypeOfAction.Select, CheckUser);
+            SqlDataReader DataIleRek = Panel.Connect(Panel.TypeOfAction.Select, IleRekordow);
 
-            count = (Int32)IleRek.ExecuteScalar(); //Spradzam czy zapytanie zwraca 1 rekord (login i hasło muszą byc unikalne! Więc zaptanie musi zwracać jeden rekord)
-
-            SqlDataReader Data = DataCmd.ExecuteReader();
-            if (count == 1 && Data.Read())
+            DataIleRek.Read();
+            IleRek = DataIleRek.GetInt32(0);
+            DataIleRek.Close();
+            if (IleRek == 1 && DataUser.Read())
             {
-                ID = Data.GetInt32(0);
-                Data.Close();
-                Conn.Close();             
+                ID = DataUser.GetInt32(0);
+                DataUser.Close();
                 return ID;
-            }            
-            else return 0;
+            }
+            else
+            {
+                DataUser.Close();
+                return 0;
+            }
             
         }
         /*Inny sposob na logowanie (uboższy bo nie zwraca ID klienta, co nie pozwala rozkminic kto jest zalogowany - wiec nie do wykorzystania, ale narazie niech lezy)

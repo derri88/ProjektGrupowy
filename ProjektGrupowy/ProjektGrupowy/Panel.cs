@@ -37,17 +37,51 @@ namespace ProjektGrupowy
             SqlConnection Conn = new SqlConnection(ConnectionString);
             Conn.Open();
 
-            SqlDataReader Data = null; ;
+            SqlDataReader Data;
 
-            if(TOA == TypeOfAction.Update)
+            if (TOA == TypeOfAction.Update)// Przy update nie zamykać SqlDataReadera! bo jego wartosc == null!!!
             {
                 SqlCommand DataCmd = new SqlCommand(Query, Conn);
                 DataCmd.ExecuteNonQuery();
+                Conn.Close();
             }
 
-            Conn.Close();
-            return Data;
+            if (TOA == TypeOfAction.Select)
+            {
+                SqlCommand DataCmd = new SqlCommand(Query, Conn);
+                Data = DataCmd.ExecuteReader(CommandBehavior.CloseConnection);
+                return Data;
+            }
+            return null;
         }
+
+        // Inny sposob na auto połączenie z bazą - zwracający SqlCommand zamiast SqlDataReader (wg. mnie gorszy sposob dlatego nie uzywam i komentuje, ale może kiedyś się przydać(brak mozliwosci uzycia SqlDataReader-a) , więc nie usuwam.
+        /*public SqlCommand Connect1(TypeOfAction TOA, string Query)
+        {
+            string ConnectionString = "Server=ProjektGrupowy.mssql.somee.com; Database=ProjektGrupowy; User ID=derri_SQLLogin_1; Password=pe2fjz4yh9;";
+            SqlConnection Conn = new SqlConnection(ConnectionString);
+            Conn.Open();
+
+
+            SqlCommand DataCmd = null;
+
+            if (TOA == TypeOfAction.Update)// Przy update nie zamykać SqlDataReadera! bo jego wartosc == null!!!
+            {
+                DataCmd = new SqlCommand(Query, Conn);
+            }
+
+            if (TOA == TypeOfAction.Select)
+            {
+                DataCmd = new SqlCommand(Query, Conn);
+            }
+
+            if (TOA == TypeOfAction.Count)
+            {
+                DataCmd = new SqlCommand(Query, Conn);
+            }
+
+            return DataCmd;
+        }*/
 
         private void DaneSave_Click(object sender, EventArgs e)
         {
@@ -64,7 +98,6 @@ namespace ProjektGrupowy
 
             SqlDataReader Data = Connect(TypeOfAction.Update, UpdateUser);
             MessageBox.Show("Dane zaaktualizowane");
-
         }
 
         private void OcenaSave_Click(object sender, EventArgs e)
@@ -74,7 +107,7 @@ namespace ProjektGrupowy
 
             string UpdateOcena =
                 "update Ocena " +
-                "set Ocena = " + OcenaBox.Text + //+ ocena + //!!! DAL KUBY!!!Nie musisz "przerabiac oceny z txt w textbox na int, bo do zapytania i tak tylko txt idzie :)/
+                "set Ocena = " + OcenaBox.Text + //+ ocena + //!!! DLA KUBY!!!Nie musisz "przerabiac oceny z txt w textbox na int, bo do zapytania i tak tylko txt idzie :)/
                 "where Ocena.ID_plyta = " + ID_Selected_MPlyta +" and Ocena.ID_user = " + Program.ID_zalogowanego;
 
             SqlDataReader Data = Connect(TypeOfAction.Update, UpdateOcena);
@@ -278,18 +311,13 @@ namespace ProjektGrupowy
             DateTime Data_ur;
             int Plec;
             int ID = Program.ID_zalogowanego;
-            string ConnectionString = "Server=ProjektGrupowy.mssql.somee.com; Database=ProjektGrupowy; User ID=derri_SQLLogin_1; Password=pe2fjz4yh9;";
-
             string GetDane_user= 
                 "SELECT Users.Nick, Users.Imie, Users.Nazwisko, Users.Kraj, Users.Miasto, Users.Mail, Status.Nazwa, Users.Data_urodzenia, Users.Id_plec " +
                 "FROM Users INNER JOIN Status on Status.ID_status = Users.ID_status " +
                 "WHERE Users.ID_user = " + ID;
 
-            SqlConnection Conn = new SqlConnection(ConnectionString);
-            Conn.Open();
+            SqlDataReader Data = Connect(TypeOfAction.Select, GetDane_user);
 
-            SqlCommand DataCmd = new SqlCommand(GetDane_user, Conn);
-            SqlDataReader Data = DataCmd.ExecuteReader();
             Data.Read();
             Nick = Data.GetString(0);
             Imie = Data.GetString(1);
@@ -334,13 +362,12 @@ namespace ProjektGrupowy
             PlecBox.SelectedIndex = Plec - 1;
 
             Data.Close();
-            Conn.Close(); 
         }
 
         public void Plyty_uzytkownika_Show()
         {
             int ID = Program.ID_zalogowanego;
-            string ConnectionString = "Server=ProjektGrupowy.mssql.somee.com; Database=ProjektGrupowy; User ID=derri_SQLLogin_1; Password=pe2fjz4yh9;";
+            //string ConnectionString = "Server=ProjektGrupowy.mssql.somee.com; Database=ProjektGrupowy; User ID=derri_SQLLogin_1; Password=pe2fjz4yh9;";
             string Plyta, Zespol, Gatunek;
             int  Rok, Sciezki, Ocena, ID_Plyta;
 
@@ -351,14 +378,16 @@ namespace ProjektGrupowy
                 "inner join Zespol on Zespol.ID_zespol = Plyta.ID_zespol " +
                 "inner join Gatunek on Gatunek.ID_gatunek = Plyta.ID_gatunek " +
                 "where Ocena.ID_user = " + ID;
-            SqlConnection Conn = new SqlConnection(ConnectionString);
-            Conn.Open();
+            //SqlConnection Conn = new SqlConnection(ConnectionString);
+            //Conn.Open();
 
-            SqlCommand DataCmd = new SqlCommand(GetDane_plyty, Conn);
-            SqlDataReader Data = DataCmd.ExecuteReader();
+            //SqlCommand DataCmd = new SqlCommand(GetDane_plyty, Conn);
+            //SqlDataReader Data = DataCmd.ExecuteReader();
+
+            SqlDataReader Data = Connect(TypeOfAction.Select, GetDane_plyty);
+
             while (Data.Read())
             {
-                //Data.Read();
                 Plyta = Data.GetString(0);
                 Zespol = Data.GetString(1);
                 Gatunek = Data.GetString(2);
@@ -368,12 +397,8 @@ namespace ProjektGrupowy
                 ID_Plyta = Data.GetInt32(6);
 
                 MOcenyList.Items.Add(new ListViewItem(new[] { ID_Plyta.ToString(), Plyta, Zespol, Gatunek, Rok.ToString(), Sciezki.ToString(), Ocena.ToString()}));
-
-
             }
-
             Data.Close();
-            Conn.Close(); 
         }
 
         private void DataBox_ValueChanged(object sender, EventArgs e)
