@@ -151,25 +151,89 @@ namespace ProjektGrupowy
         
         private void ZSzukaj_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Do dodania funkcja która zapełni wynikami wyszukiwania listę po prawej, i wyświetli w grupie zespół pierwszy item z listy");
-            /*string Nazwa = ZNazwaBox.Text;        /// funkcja do skończenia :)
-            string Gatunek = ZGatunek.Text;
+            //MessageBox.Show("Do dodania funkcja która zapełni wynikami wyszukiwania listę po prawej, i wyświetli w grupie zespół pierwszy item z listy");
+            string ZespolV, GatunekV;
+            int ZespolID, RokStV, CountV;
+            int? RokEndV;
+            
+            string Nazwa = ZNazwaBox.Text;
+            string Gatunek = ZGatunekBox.Text;
             string RokSt = ZRokStBox.Text;
             string RokEnd = ZRokEndBox.Text;
-            //string RokStOption = RokStGroup.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Text;
-            //string RokEndOption = RokEndGroup.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Text;
+            string RokStOption = RokStGroup.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Text;
+            string RokEndOption = RokEndGroup.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Text;
+            string warunek = "";
+            int Warunki_sum = 0;
 
-            string GetZespoly = "SELECT ID_Zespol, Nazwa, Gatunek, Rok_start, Rok_end, Count(Id_plyta) FROM Zespol " +
-                                "INNER JOIN Plyty on Plyty.Id_Zespol = Zespol.Id_Zespol " +
-                                "INNER JOIN Gatunek on Gatunek.Id_Gatunek = Zespol.Id_Gatunek " +
-                                "GROUP BY Plyty.ID_Plyta" +
-                                "WHERE Gatunek.Nazwa = " + Gatunek;
-                                
-            SqlDataReader Data = Connect(TypeOfAction.Select, GetZespoly);
-            Data.Read();
-            MessageBox.Show(Data.GetString(1));
-            Data.Close();
-             * */
+            int[] Warunki = new int[4];
+            Warunki[0] = If_Checked(ZNazwaCheck, ZNazwaBox);
+            Warunki[1] = If_Checked(ZGatunekCheck, ZGatunekBox);
+            Warunki[2] = If_Checked(ZRokStCheck, ZRokStBox);
+            Warunki[3] = If_Checked(ZRokEndCheck, ZRokEndBox);
+            Warunki_sum = Warunki[0] + Warunki[1] + Warunki[2] + Warunki[3];
+
+            string[] Warunki_String = new string[4];
+            Warunki_String[0] = "Zespol.Nazwa like '%" + Nazwa + "%' ";
+            Warunki_String[1] = "Gatunek.Nazwa = '" + Gatunek + "' ";
+            Warunki_String[2] = "Zespol.Rok_Start " + RokStOption +" " + RokSt + " ";
+            Warunki_String[3] = "Zespol.Rok_End " + RokEndOption + " " + RokEnd + " ";
+
+            bool Warunki_ok = false;
+            if ((Warunki_sum) > 0)
+            {
+                Warunki_ok = true;
+            }
+
+            ZespolyList.Items.Clear();
+
+            if (Warunki_ok)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    if (Warunki[i] == 1)
+                    {
+                        warunek = warunek + Warunki_String[i];
+                        Warunki_sum += -1;
+                    }
+                    if (Warunki_sum != 0 & Warunki[i] == 1)
+                    {
+                        warunek = warunek + "and ";
+                    }
+                }
+                string GetZespoly = "select Zespol.ID_zespol, Zespol.Nazwa, Gatunek.Nazwa, Zespol.Rok_start, Zespol.Rok_end " +
+                                    "from dbo.Zespol " +
+                                    "inner join Gatunek on Gatunek.Id_gatunek = Zespol.Id_Gatunek " +
+                                    "where " + warunek;
+
+                SqlDataReader Data = Connect(TypeOfAction.Select, GetZespoly);
+
+                while (Data.Read())
+                {
+                    ZespolID = Data.GetInt32(0);
+                    ZespolV = Data.GetString(1);
+                    GatunekV = Data.GetString(2);
+                    RokStV = Data.GetInt32(3);
+                    if (Data.IsDBNull(4))
+                        RokEndV = 0;
+                    else
+                        RokEndV = Data.GetInt32(4);
+
+                    string GetCountPlyty = "select COUNT(*) from Plyta " +
+                                       "where Plyta.ID_zespol = " + ZespolID +
+                                       "group by Plyta.ID_zespol";
+                    SqlDataReader Data1 = Connect(TypeOfAction.Select, GetCountPlyty);
+                    Data1.Read();
+                    CountV = Data1.GetInt32(0);
+                    Data1.Close();
+
+                    ZespolyList.Items.Add(new ListViewItem(new[] { ZespolID.ToString(), ZespolV, GatunekV, RokStV.ToString(), RokEndV.ToString(), CountV.ToString() }));
+                }
+                Data.Close();
+            }
+            else
+            {
+                MessageBox.Show("Nie zaznaczono żadnego warunku wyszukiwania lub pola pozostały puste");
+            }
         }
 
         private void ZEditButton_Click(object sender, EventArgs e)
@@ -474,6 +538,13 @@ namespace ProjektGrupowy
             DropDownItems_Rok(ZRokStBox1);
         }
 
+        private int If_Checked(CheckBox CB, Control CT)
+        {
+            if (CB.Checked == true & CT.Text!="")
+                return 1;
+            else
+                return 0;
+        }
 
     }
 }

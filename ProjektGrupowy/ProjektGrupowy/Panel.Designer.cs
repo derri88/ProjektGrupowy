@@ -110,7 +110,7 @@
             this.RadioSt1 = new System.Windows.Forms.RadioButton();
             this.RadioSt5 = new System.Windows.Forms.RadioButton();
             this.RatioSt3 = new System.Windows.Forms.RadioButton();
-            this.ZRokCheck = new System.Windows.Forms.CheckBox();
+            this.ZRokEndCheck = new System.Windows.Forms.CheckBox();
             this.ZRokStBox = new System.Windows.Forms.ComboBox();
             this.ZRokEnd = new System.Windows.Forms.Label();
             this.ZRokStCheck = new System.Windows.Forms.CheckBox();
@@ -169,6 +169,7 @@
             this.PNazwaCheck = new System.Windows.Forms.CheckBox();
             this.PNazwaBox = new System.Windows.Forms.TextBox();
             this.PNazwa = new System.Windows.Forms.Label();
+            this.VID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PanelTabControl.SuspendLayout();
             this.TabMojeOceny.SuspendLayout();
             this.DaneGroup.SuspendLayout();
@@ -639,6 +640,7 @@
             // ZespolyList
             // 
             this.ZespolyList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.VID,
             this.VNazwa,
             this.VGatunek,
             this.VRSt,
@@ -654,26 +656,31 @@
             // 
             // VNazwa
             // 
+            this.VNazwa.DisplayIndex = 0;
             this.VNazwa.Text = "Nazwa";
             this.VNazwa.Width = 64;
             // 
             // VGatunek
             // 
+            this.VGatunek.DisplayIndex = 1;
             this.VGatunek.Text = "Gatunek";
             this.VGatunek.Width = 75;
             // 
             // VRSt
             // 
+            this.VRSt.DisplayIndex = 2;
             this.VRSt.Text = "Rok założenia";
             this.VRSt.Width = 97;
             // 
             // VREnd
             // 
+            this.VREnd.DisplayIndex = 3;
             this.VREnd.Text = "Rok końcowy";
             this.VREnd.Width = 75;
             // 
             // VCount
             // 
+            this.VCount.DisplayIndex = 4;
             this.VCount.Text = "Liczba płyt";
             this.VCount.Width = 76;
             // 
@@ -838,7 +845,7 @@
             this.ZSzukajGroup.Controls.Add(this.RokEndGroup);
             this.ZSzukajGroup.Controls.Add(this.ZRokEndBox);
             this.ZSzukajGroup.Controls.Add(this.RokStGroup);
-            this.ZSzukajGroup.Controls.Add(this.ZRokCheck);
+            this.ZSzukajGroup.Controls.Add(this.ZRokEndCheck);
             this.ZSzukajGroup.Controls.Add(this.ZRokStBox);
             this.ZSzukajGroup.Controls.Add(this.ZRokEnd);
             this.ZSzukajGroup.Controls.Add(this.ZRokStCheck);
@@ -885,10 +892,9 @@
             this.RadioEnd4.AutoSize = true;
             this.RadioEnd4.Location = new System.Drawing.Point(151, 19);
             this.RadioEnd4.Name = "RadioEnd4";
-            this.RadioEnd4.Size = new System.Drawing.Size(31, 17);
+            this.RadioEnd4.Size = new System.Drawing.Size(37, 17);
             this.RadioEnd4.TabIndex = 4;
-            this.RadioEnd4.TabStop = true;
-            this.RadioEnd4.Text = ">";
+            this.RadioEnd4.Text = ">=";
             this.RadioEnd4.UseVisualStyleBackColor = true;
             // 
             // RadioEnd2
@@ -898,7 +904,6 @@
             this.RadioEnd2.Name = "RadioEnd2";
             this.RadioEnd2.Size = new System.Drawing.Size(37, 17);
             this.RadioEnd2.TabIndex = 3;
-            this.RadioEnd2.TabStop = true;
             this.RadioEnd2.Text = "<=";
             this.RadioEnd2.UseVisualStyleBackColor = true;
             // 
@@ -909,7 +914,6 @@
             this.RadioEnd1.Name = "RadioEnd1";
             this.RadioEnd1.Size = new System.Drawing.Size(31, 17);
             this.RadioEnd1.TabIndex = 2;
-            this.RadioEnd1.TabStop = true;
             this.RadioEnd1.Text = "<";
             this.RadioEnd1.UseVisualStyleBackColor = true;
             // 
@@ -920,13 +924,13 @@
             this.RadioEnd5.Name = "RadioEnd5";
             this.RadioEnd5.Size = new System.Drawing.Size(31, 17);
             this.RadioEnd5.TabIndex = 1;
-            this.RadioEnd5.TabStop = true;
             this.RadioEnd5.Text = ">";
             this.RadioEnd5.UseVisualStyleBackColor = true;
             // 
             // RadioEnd3
             // 
             this.RadioEnd3.AutoSize = true;
+            this.RadioEnd3.Checked = true;
             this.RadioEnd3.Location = new System.Drawing.Point(114, 19);
             this.RadioEnd3.Name = "RadioEnd3";
             this.RadioEnd3.Size = new System.Drawing.Size(31, 17);
@@ -962,10 +966,9 @@
             this.RadioSt4.AutoSize = true;
             this.RadioSt4.Location = new System.Drawing.Point(151, 19);
             this.RadioSt4.Name = "RadioSt4";
-            this.RadioSt4.Size = new System.Drawing.Size(31, 17);
+            this.RadioSt4.Size = new System.Drawing.Size(37, 17);
             this.RadioSt4.TabIndex = 4;
-            this.RadioSt4.TabStop = true;
-            this.RadioSt4.Text = ">";
+            this.RadioSt4.Text = ">=";
             this.RadioSt4.UseVisualStyleBackColor = true;
             // 
             // RadioSt2
@@ -975,7 +978,6 @@
             this.RadioSt2.Name = "RadioSt2";
             this.RadioSt2.Size = new System.Drawing.Size(37, 17);
             this.RadioSt2.TabIndex = 3;
-            this.RadioSt2.TabStop = true;
             this.RadioSt2.Text = "<=";
             this.RadioSt2.UseVisualStyleBackColor = true;
             // 
@@ -986,7 +988,6 @@
             this.RadioSt1.Name = "RadioSt1";
             this.RadioSt1.Size = new System.Drawing.Size(31, 17);
             this.RadioSt1.TabIndex = 2;
-            this.RadioSt1.TabStop = true;
             this.RadioSt1.Text = "<";
             this.RadioSt1.UseVisualStyleBackColor = true;
             // 
@@ -997,13 +998,13 @@
             this.RadioSt5.Name = "RadioSt5";
             this.RadioSt5.Size = new System.Drawing.Size(31, 17);
             this.RadioSt5.TabIndex = 1;
-            this.RadioSt5.TabStop = true;
             this.RadioSt5.Text = ">";
             this.RadioSt5.UseVisualStyleBackColor = true;
             // 
             // RatioSt3
             // 
             this.RatioSt3.AutoSize = true;
+            this.RatioSt3.Checked = true;
             this.RatioSt3.Location = new System.Drawing.Point(114, 19);
             this.RatioSt3.Name = "RatioSt3";
             this.RatioSt3.Size = new System.Drawing.Size(31, 17);
@@ -1012,14 +1013,14 @@
             this.RatioSt3.Text = "=";
             this.RatioSt3.UseVisualStyleBackColor = true;
             // 
-            // ZRokCheck
+            // ZRokEndCheck
             // 
-            this.ZRokCheck.AutoSize = true;
-            this.ZRokCheck.Location = new System.Drawing.Point(250, 158);
-            this.ZRokCheck.Name = "ZRokCheck";
-            this.ZRokCheck.Size = new System.Drawing.Size(15, 14);
-            this.ZRokCheck.TabIndex = 16;
-            this.ZRokCheck.UseVisualStyleBackColor = true;
+            this.ZRokEndCheck.AutoSize = true;
+            this.ZRokEndCheck.Location = new System.Drawing.Point(250, 158);
+            this.ZRokEndCheck.Name = "ZRokEndCheck";
+            this.ZRokEndCheck.Size = new System.Drawing.Size(15, 14);
+            this.ZRokEndCheck.TabIndex = 16;
+            this.ZRokEndCheck.UseVisualStyleBackColor = true;
             // 
             // ZRokStBox
             // 
@@ -1568,6 +1569,11 @@
             this.PNazwa.Text = "Nazwa";
             this.PNazwa.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // VID
+            // 
+            this.VID.DisplayIndex = 5;
+            this.VID.Width = 0;
+            // 
             // Panel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1656,7 +1662,7 @@
         private System.Windows.Forms.RadioButton RadioSt1;
         private System.Windows.Forms.RadioButton RadioSt5;
         private System.Windows.Forms.RadioButton RatioSt3;
-        private System.Windows.Forms.CheckBox ZRokCheck;
+        private System.Windows.Forms.CheckBox ZRokEndCheck;
         private System.Windows.Forms.ComboBox ZRokStBox;
         private System.Windows.Forms.Label ZRokEnd;
         private System.Windows.Forms.CheckBox ZRokStCheck;
@@ -1748,6 +1754,7 @@
         private System.Windows.Forms.Button PCancel;
         private System.Windows.Forms.Button ZPlytyButton;
         private System.Windows.Forms.ColumnHeader IDV;
+        private System.Windows.Forms.ColumnHeader VID;
 
         //private void InitializeComponent(bool parametr)
         //{
