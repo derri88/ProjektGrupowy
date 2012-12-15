@@ -138,6 +138,8 @@ namespace ProjektGrupowy
             //MessageBox.Show("Do dodania funkcja która przeniesie zaznaczony rekord do pól po prawej");
             if (MOcenyList.SelectedItems.Count != 0)
             {
+                OcenaBox.Enabled = true;
+                OcenaSave.Enabled = true;
                 PlytaBox.Text = MOcenyList.SelectedItems[0].SubItems[1].Text;
                 ZespolBox.Text = MOcenyList.SelectedItems[0].SubItems[2].Text;
                 GatunekBox.Text = MOcenyList.SelectedItems[0].SubItems[3].Text;

@@ -75,6 +75,7 @@
             this.OcenaV = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TabZespoly = new System.Windows.Forms.TabPage();
             this.ZespolyList = new System.Windows.Forms.ListView();
+            this.VID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.VNazwa = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.VGatunek = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.VRSt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -169,7 +170,6 @@
             this.PNazwaCheck = new System.Windows.Forms.CheckBox();
             this.PNazwaBox = new System.Windows.Forms.TextBox();
             this.PNazwa = new System.Windows.Forms.Label();
-            this.VID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PanelTabControl.SuspendLayout();
             this.TabMojeOceny.SuspendLayout();
             this.DaneGroup.SuspendLayout();
@@ -439,6 +439,7 @@
             // 
             // OcenaSave
             // 
+            this.OcenaSave.Enabled = false;
             this.OcenaSave.Location = new System.Drawing.Point(91, 229);
             this.OcenaSave.Name = "OcenaSave";
             this.OcenaSave.Size = new System.Drawing.Size(185, 33);
@@ -457,6 +458,7 @@
             // 
             // OcenaBox
             // 
+            this.OcenaBox.Enabled = false;
             this.OcenaBox.FormattingEnabled = true;
             this.OcenaBox.Items.AddRange(new object[] {
             "1",
@@ -653,6 +655,11 @@
             this.ZespolyList.UseCompatibleStateImageBehavior = false;
             this.ZespolyList.View = System.Windows.Forms.View.Details;
             this.ZespolyList.SelectedIndexChanged += new System.EventHandler(this.ZespolyList_SelectedIndexChanged);
+            // 
+            // VID
+            // 
+            this.VID.DisplayIndex = 5;
+            this.VID.Width = 0;
             // 
             // VNazwa
             // 
@@ -1568,11 +1575,6 @@
             this.PNazwa.TabIndex = 4;
             this.PNazwa.Text = "Nazwa";
             this.PNazwa.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // VID
-            // 
-            this.VID.DisplayIndex = 5;
-            this.VID.Width = 0;
             // 
             // Panel
             // 
