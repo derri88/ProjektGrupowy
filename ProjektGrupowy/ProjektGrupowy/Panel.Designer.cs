@@ -128,7 +128,7 @@
             this.PVGatunek = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PVZespol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PVRok = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.PVSciezko = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.PVSciezki = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PVAvg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PlytaGroup = new System.Windows.Forms.GroupBox();
             this.PZespolBox1 = new System.Windows.Forms.ComboBox();
@@ -170,6 +170,7 @@
             this.PNazwaCheck = new System.Windows.Forms.CheckBox();
             this.PNazwaBox = new System.Windows.Forms.TextBox();
             this.PNazwa = new System.Windows.Forms.Label();
+            this.PVID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PanelTabControl.SuspendLayout();
             this.TabMojeOceny.SuspendLayout();
             this.DaneGroup.SuspendLayout();
@@ -1134,13 +1135,16 @@
             // PlytyList
             // 
             this.PlytyList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.PVID,
             this.PVNazwa,
             this.PVGatunek,
             this.PVZespol,
             this.PVRok,
-            this.PVSciezko,
+            this.PVSciezki,
             this.PVAvg});
+            this.PlytyList.FullRowSelect = true;
             this.PlytyList.Location = new System.Drawing.Point(287, 5);
+            this.PlytyList.MultiSelect = false;
             this.PlytyList.Name = "PlytyList";
             this.PlytyList.Size = new System.Drawing.Size(467, 293);
             this.PlytyList.TabIndex = 5;
@@ -1149,27 +1153,39 @@
             // 
             // PVNazwa
             // 
+            this.PVNazwa.DisplayIndex = 0;
             this.PVNazwa.Text = "Nazwa";
+            this.PVNazwa.Width = 84;
             // 
             // PVGatunek
             // 
+            this.PVGatunek.DisplayIndex = 1;
             this.PVGatunek.Text = "Gatunek";
+            this.PVGatunek.Width = 80;
             // 
             // PVZespol
             // 
+            this.PVZespol.DisplayIndex = 2;
             this.PVZespol.Text = "Zespol";
+            this.PVZespol.Width = 65;
             // 
             // PVRok
             // 
+            this.PVRok.DisplayIndex = 3;
             this.PVRok.Text = "Rok wydania";
+            this.PVRok.Width = 76;
             // 
-            // PVSciezko
+            // PVSciezki
             // 
-            this.PVSciezko.Text = "Ilość ścieżek";
+            this.PVSciezki.DisplayIndex = 4;
+            this.PVSciezki.Text = "Ilość ścieżek";
+            this.PVSciezki.Width = 74;
             // 
             // PVAvg
             // 
+            this.PVAvg.DisplayIndex = 5;
             this.PVAvg.Text = "Średnia ocena";
+            this.PVAvg.Width = 84;
             // 
             // PlytaGroup
             // 
@@ -1452,10 +1468,9 @@
             this.RadioRok4.AutoSize = true;
             this.RadioRok4.Location = new System.Drawing.Point(151, 19);
             this.RadioRok4.Name = "RadioRok4";
-            this.RadioRok4.Size = new System.Drawing.Size(31, 17);
+            this.RadioRok4.Size = new System.Drawing.Size(37, 17);
             this.RadioRok4.TabIndex = 4;
-            this.RadioRok4.TabStop = true;
-            this.RadioRok4.Text = ">";
+            this.RadioRok4.Text = ">=";
             this.RadioRok4.UseVisualStyleBackColor = true;
             // 
             // RadioRok2
@@ -1494,6 +1509,7 @@
             // RadioRok3
             // 
             this.RadioRok3.AutoSize = true;
+            this.RadioRok3.Checked = true;
             this.RadioRok3.Location = new System.Drawing.Point(114, 19);
             this.RadioRok3.Name = "RadioRok3";
             this.RadioRok3.Size = new System.Drawing.Size(31, 17);
@@ -1578,6 +1594,12 @@
             this.PNazwa.TabIndex = 4;
             this.PNazwa.Text = "Nazwa";
             this.PNazwa.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // PVID
+            // 
+            this.PVID.DisplayIndex = 6;
+            this.PVID.Text = "ID";
+            this.PVID.Width = 0;
             // 
             // Panel
             // 
@@ -1694,7 +1716,7 @@
         private System.Windows.Forms.ColumnHeader PVGatunek;
         private System.Windows.Forms.ColumnHeader PVZespol;
         private System.Windows.Forms.ColumnHeader PVRok;
-        private System.Windows.Forms.ColumnHeader PVSciezko;
+        private System.Windows.Forms.ColumnHeader PVSciezki;
         private System.Windows.Forms.GroupBox PlytaGroup;
         private System.Windows.Forms.GroupBox PEditGroup;
         private System.Windows.Forms.Button PSaveButton;
@@ -1760,6 +1782,7 @@
         private System.Windows.Forms.Button ZPlytyButton;
         private System.Windows.Forms.ColumnHeader IDV;
         private System.Windows.Forms.ColumnHeader VID;
+        private System.Windows.Forms.ColumnHeader PVID;
 
         //private void InitializeComponent(bool parametr)
         //{

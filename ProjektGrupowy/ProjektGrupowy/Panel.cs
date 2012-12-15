@@ -284,8 +284,89 @@ namespace ProjektGrupowy
 
         private void PSzukaj_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Funkcja która zapełni listę, i wyświetli pierwszę płytę w grupie płyta");
-            PlytyList.View = View.Details;
+            string NazwaV, ZespolV, GatunekV;
+            int PlytaID, RokV, SciezkiV, AvgV;
+
+            string Nazwa = PNazwaBox.Text;
+            string Gatunek = PGatunekBox.Text;
+            string Zespol = PZespolBox.Text;
+            string Rok = PRokBox.Text;           
+            string RokOption = PRokGroup.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Text;
+
+            string warunek = "";
+            int Warunki_sum = 0;
+
+            int[] Warunki = new int[4];
+            Warunki[0] = If_Checked(PNazwaCheck, PNazwaBox);
+            Warunki[1] = If_Checked(PGatunekCheck, PGatunekBox);
+            Warunki[2] = If_Checked(PZespolCheck, PZespolBox);
+            Warunki[3] = If_Checked(PRokCheck, PRokBox);
+            Warunki_sum = Warunki[0] + Warunki[1] + Warunki[2] + Warunki[3];
+
+            string[] Warunki_String = new string[4];
+            Warunki_String[0] = "Plyta.Nazwa like '%" + Nazwa + "%' ";
+            Warunki_String[1] = "Gatunek.Nazwa = '" + Gatunek + "' ";
+            Warunki_String[2] = "Zespol.Nazwa like '%" + Zespol + "%' ";
+            Warunki_String[3] = "Plyta.Rok_wydania " + RokOption + " " + Rok + " ";
+
+            bool Warunki_ok = false;
+            if ((Warunki_sum) > 0)
+            {
+                Warunki_ok = true;
+            }
+
+            PlytyList.Items.Clear();
+
+            if (Warunki_ok)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    if (Warunki[i] == 1)
+                    {
+                        warunek = warunek + Warunki_String[i];
+                        Warunki_sum += -1;
+                    }
+                    if (Warunki_sum != 0 & Warunki[i] == 1)
+                    {
+                        warunek = warunek + "and ";
+                    }
+                }
+                string GetPlyty = " select Plyta.ID_Plyta, Plyta.Nazwa, Gatunek.Nazwa, Zespol.Nazwa, Plyta.Rok_wydania, Plyta.Ilosc_Sciezek " +
+                                    "from dbo.Plyta " +
+                                    "inner join Gatunek on Gatunek.Id_gatunek = Plyta.Id_Gatunek " +
+                                    "inner join Zespol on Zespol.Id_zespol = Plyta.Id_zespol " +
+                                    "where " + warunek;
+
+                SqlDataReader Data = Connect(TypeOfAction.Select, GetPlyty);
+
+                while (Data.Read())
+                {
+                    PlytaID = Data.GetInt32(0);
+                    NazwaV = Data.GetString(1);
+                    GatunekV = Data.GetString(2);
+                    ZespolV = Data.GetString(3);
+                    RokV = Data.GetInt32(4);
+                    SciezkiV = Data.GetInt32(5);
+
+                    string GetAvgPlyta = "select AVG(Ocena.Ocena) from Ocena " +
+                                       "where Ocena.ID_plyta = " + PlytaID +
+                                       "group by Ocena.ID_plyta";                   // poprawic zapytanie zeby AVG nie zwracało int
+                    SqlDataReader Data1 = Connect(TypeOfAction.Select, GetAvgPlyta);
+                    Data1.Read();
+                    AvgV = Data1.GetInt32(0);
+                    Data1.Close();
+
+                    PlytyList.Items.Add(new ListViewItem(new[] { PlytaID.ToString(), NazwaV, GatunekV, ZespolV, RokV.ToString(), SciezkiV.ToString(), AvgV.ToString() }));
+                }
+                Data.Close();
+            }
+            else
+            {
+                MessageBox.Show("Nie zaznaczono żadnego warunku wyszukiwania lub pola pozostały puste");
+            }
+
+            //ZPlytyButton.Enabled = false;
+            //this.ZWyczysc();
         }
 
         private void POcenaDodaj_Click(object sender, EventArgs e)
