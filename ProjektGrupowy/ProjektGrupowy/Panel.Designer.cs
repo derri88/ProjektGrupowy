@@ -648,7 +648,9 @@
             this.VRSt,
             this.VREnd,
             this.VCount});
+            this.ZespolyList.FullRowSelect = true;
             this.ZespolyList.Location = new System.Drawing.Point(287, 5);
+            this.ZespolyList.MultiSelect = false;
             this.ZespolyList.Name = "ZespolyList";
             this.ZespolyList.Size = new System.Drawing.Size(467, 291);
             this.ZespolyList.TabIndex = 2;
@@ -712,6 +714,7 @@
             // 
             // ZPlytyButton
             // 
+            this.ZPlytyButton.Enabled = false;
             this.ZPlytyButton.Location = new System.Drawing.Point(13, 251);
             this.ZPlytyButton.Name = "ZPlytyButton";
             this.ZPlytyButton.Size = new System.Drawing.Size(256, 36);

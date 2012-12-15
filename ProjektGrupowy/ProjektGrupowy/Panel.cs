@@ -13,6 +13,7 @@ namespace ProjektGrupowy
     public partial class Panel : Form
     {
         public static int ID_Selected_MPlyta = 0;
+        public static int ID_Selected_Zespol = 0;
         public string NickData, ImieData, NazwiskoData, KrajData, MiastoData, MailData, StatusData;
         public DateTime Data_ur;
         public int PlecData;
@@ -236,6 +237,9 @@ namespace ProjektGrupowy
             {
                 MessageBox.Show("Nie zaznaczono żadnego warunku wyszukiwania lub pola pozostały puste");
             }
+
+            ZPlytyButton.Enabled = false;
+            this.ZWyczysc();
         }
 
         private void ZEditButton_Click(object sender, EventArgs e)
@@ -266,7 +270,16 @@ namespace ProjektGrupowy
 
         private void ZespolyList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MessageBox.Show("Jeśli ilość płyt jest >0 to przeniesie do zakładki płyty, i tam wyświetli wszystkie płyty");
+            //MessageBox.Show("Jeśli ilość płyt jest >0 to przeniesie do zakładki płyty, i tam wyświetli wszystkie płyty");
+            if (ZespolyList.SelectedItems.Count != 0)
+            {
+                ZPlytyButton.Enabled = true;
+                ZNazwaBox1.Text = ZespolyList.SelectedItems[0].SubItems[1].Text;
+                ZGatunekBox1.Text = ZespolyList.SelectedItems[0].SubItems[2].Text;
+                ZRokStBox1.Text = ZespolyList.SelectedItems[0].SubItems[3].Text;
+                ZRokEndBox1.Text = ZespolyList.SelectedItems[0].SubItems[4].Text;
+                ID_Selected_Zespol = Int32.Parse(MOcenyList.SelectedItems[0].SubItems[0].Text);
+            }
         }
 
         private void PSzukaj_Click(object sender, EventArgs e)
