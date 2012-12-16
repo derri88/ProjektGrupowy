@@ -14,6 +14,7 @@ namespace ProjektGrupowy
     {
         public static int ID_Selected_MPlyta = 0;
         public static int ID_Selected_Zespol = 0;
+        public static int ID_Selected_Plyta = 0;
         public string NickData, ImieData, NazwiskoData, KrajData, MiastoData, MailData, StatusData;
         public DateTime Data_ur;
         public int PlecData;
@@ -187,10 +188,15 @@ namespace ProjektGrupowy
                 Warunki_ok = true;
             }
 
-            ZespolyList.Items.Clear();
+            
 
             if (Warunki_ok)
             {
+                ZespolyList.Items.Clear();
+                ZWyczysc();
+                ZPlytyButton.Enabled = false;
+                ID_Selected_Zespol = 0;
+
                 for (int i = 0; i < 4; i++)
                 {
                     if (Warunki[i] == 1)
@@ -237,9 +243,6 @@ namespace ProjektGrupowy
             {
                 MessageBox.Show("Nie zaznaczono żadnego warunku wyszukiwania lub pola pozostały puste");
             }
-
-            ZPlytyButton.Enabled = false;
-            this.ZWyczysc();
         }
 
         private void ZEditButton_Click(object sender, EventArgs e)
@@ -279,7 +282,6 @@ namespace ProjektGrupowy
                 ZRokStBox1.Text = ZespolyList.SelectedItems[0].SubItems[3].Text;
                 ZRokEndBox1.Text = ZespolyList.SelectedItems[0].SubItems[4].Text;
                 ID_Selected_Zespol = Int32.Parse(ZespolyList.SelectedItems[0].SubItems[0].Text);
-
             }
         }
 
@@ -316,10 +318,16 @@ namespace ProjektGrupowy
                 Warunki_ok = true;
             }
 
-            PlytyList.Items.Clear();
+            
 
             if (Warunki_ok)
             {
+                PlytyList.Items.Clear();
+                PWyczysc();
+                ID_Selected_Plyta = 0;
+                POcenaBox.Enabled = false;
+                POcenaDodaj.Enabled = false;
+
                 for (int i = 0; i < 4; i++)
                 {
                     if (Warunki[i] == 1)
@@ -374,8 +382,8 @@ namespace ProjektGrupowy
                 MessageBox.Show("Nie zaznaczono żadnego warunku wyszukiwania lub pola pozostały puste");
             }
 
-            //ZPlytyButton.Enabled = false;
-            //this.ZWyczysc();
+            
+            
         }
 
         private void POcenaDodaj_Click(object sender, EventArgs e)
@@ -507,7 +515,11 @@ namespace ProjektGrupowy
             double Avg;
             if (ID_Selected_Zespol != 0)
             {
+                Plyty_SzukajClear();
                 PanelTabControl.SelectedTab = TabPlyty;
+                ID_Selected_Plyta = 0;
+                POcenaBox.Enabled = false;
+                POcenaDodaj.Enabled = false;
                 PlytyList.Items.Clear();
                 string GetPlyty = " select Plyta.ID_Plyta, Plyta.Nazwa, Gatunek.Nazwa, Zespol.Nazwa, Plyta.Rok_wydania, Plyta.Ilosc_Sciezek " +
                     "from dbo.Plyta " +
@@ -668,7 +680,7 @@ namespace ProjektGrupowy
                 CB.Items.Add(i);
             }
         }
-        private void DropDownItems_Sciezki(ComboBox CB) // Rok jako item do ComboBoxow
+        private void DropDownItems_Sciezki(ComboBox CB)
         {
             for (int i = 1; i <= 50; i++)
             {
@@ -676,10 +688,10 @@ namespace ProjektGrupowy
             }
         }
 
-        private void DropDownItems_Zespol(ComboBox CB) // Pobiera gatunki jako itemy do ComboBoxow
+        private void DropDownItems_Zespol(ComboBox CB) 
         {
-            string GetGatunki = "SELECT Nazwa FROM Zespol ORDER BY Nazwa desc";
-            SqlDataReader Data = Connect(TypeOfAction.Select, GetGatunki);
+            string GetZespol = "SELECT Nazwa FROM Zespol ORDER BY Nazwa desc";
+            SqlDataReader Data = Connect(TypeOfAction.Select, GetZespol);
             while (Data.Read())
             {
                 CB.Items.Add(Data.GetString(0));
@@ -715,5 +727,45 @@ namespace ProjektGrupowy
             DropDownItems_Zespol(PZespolBox1);
         }
 
+        private void Plyty_SzukajClear()
+        {
+            PNazwaBox.Text = "";
+            PNazwaCheck.Checked = false;
+            PGatunekBox.Text = "";
+            PGatunekCheck.Checked = false;
+            PZespolBox.Text = "";
+            PZespolCheck.Checked = false;
+            PRokBox.Text = "";
+            PRokCheck.Checked = false;
+            RadioRok3.Checked = true;
+        }
+
+        private void PlytyList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (PlytyList.SelectedItems.Count != 0)
+            {
+                POcenaDodaj.Enabled = true;
+                POcenaBox.Enabled = true;
+                PNazwaBox1.Text = PlytyList.SelectedItems[0].SubItems[1].Text;
+                PGatunekBox1.Text = PlytyList.SelectedItems[0].SubItems[2].Text;
+                PZespolBox1.Text = PlytyList.SelectedItems[0].SubItems[3].Text;
+                PRokBox1.Text = PlytyList.SelectedItems[0].SubItems[4].Text;
+                PSciezkiBox1.Text = PlytyList.SelectedItems[0].SubItems[5].Text;
+                ID_Selected_Plyta = Int32.Parse(PlytyList.SelectedItems[0].SubItems[0].Text);
+
+                string GetOcena = "SELECT Ocena FROM Ocena WHERE ID_Plyta = " + ID_Selected_Plyta + "and ID_user = " + Program.ID_zalogowanego;
+                SqlDataReader Data = Connect(TypeOfAction.Select, GetOcena);
+                Data.Read();
+                if (!Data.HasRows)
+                {
+                    POcenaBox.Text = "0";
+                }
+                else
+                {
+                    POcenaBox.Text = Data.GetInt32(0).ToString();
+                }
+                Data.Close();
+            }
+        }
     }
 }

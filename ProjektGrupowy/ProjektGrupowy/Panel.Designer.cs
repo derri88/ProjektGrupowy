@@ -1151,6 +1151,7 @@
             this.PlytyList.TabIndex = 5;
             this.PlytyList.UseCompatibleStateImageBehavior = false;
             this.PlytyList.View = System.Windows.Forms.View.Details;
+            this.PlytyList.SelectedIndexChanged += new System.EventHandler(this.PlytyList_SelectedIndexChanged);
             // 
             // PVID
             // 
@@ -1247,6 +1248,7 @@
             // 
             // POcenaDodaj
             // 
+            this.POcenaDodaj.Enabled = false;
             this.POcenaDodaj.Location = new System.Drawing.Point(163, 10);
             this.POcenaDodaj.Name = "POcenaDodaj";
             this.POcenaDodaj.Size = new System.Drawing.Size(72, 28);
@@ -1266,7 +1268,20 @@
             // 
             // POcenaBox
             // 
+            this.POcenaBox.Enabled = false;
             this.POcenaBox.FormattingEnabled = true;
+            this.POcenaBox.Items.AddRange(new object[] {
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"});
             this.POcenaBox.Location = new System.Drawing.Point(78, 15);
             this.POcenaBox.Name = "POcenaBox";
             this.POcenaBox.Size = new System.Drawing.Size(55, 21);
