@@ -124,6 +124,7 @@
             this.ZNazwa = new System.Windows.Forms.Label();
             this.TabPlyty = new System.Windows.Forms.TabPage();
             this.PlytyList = new System.Windows.Forms.ListView();
+            this.PVID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PVNazwa = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PVGatunek = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PVZespol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -170,7 +171,6 @@
             this.PNazwaCheck = new System.Windows.Forms.CheckBox();
             this.PNazwaBox = new System.Windows.Forms.TextBox();
             this.PNazwa = new System.Windows.Forms.Label();
-            this.PVID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PanelTabControl.SuspendLayout();
             this.TabMojeOceny.SuspendLayout();
             this.DaneGroup.SuspendLayout();
@@ -1131,6 +1131,7 @@
             this.TabPlyty.Text = "Płyty";
             this.TabPlyty.UseVisualStyleBackColor = true;
             this.TabPlyty.Click += new System.EventHandler(this.TabPlyty_Click);
+            this.TabPlyty.Enter += new System.EventHandler(this.TabPlyty_Enter);
             // 
             // PlytyList
             // 
@@ -1150,6 +1151,12 @@
             this.PlytyList.TabIndex = 5;
             this.PlytyList.UseCompatibleStateImageBehavior = false;
             this.PlytyList.View = System.Windows.Forms.View.Details;
+            // 
+            // PVID
+            // 
+            this.PVID.DisplayIndex = 6;
+            this.PVID.Text = "ID";
+            this.PVID.Width = 0;
             // 
             // PVNazwa
             // 
@@ -1594,12 +1601,6 @@
             this.PNazwa.TabIndex = 4;
             this.PNazwa.Text = "Nazwa";
             this.PNazwa.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // PVID
-            // 
-            this.PVID.DisplayIndex = 6;
-            this.PVID.Text = "ID";
-            this.PVID.Width = 0;
             // 
             // Panel
             // 

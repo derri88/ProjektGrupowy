@@ -278,15 +278,16 @@ namespace ProjektGrupowy
                 ZGatunekBox1.Text = ZespolyList.SelectedItems[0].SubItems[2].Text;
                 ZRokStBox1.Text = ZespolyList.SelectedItems[0].SubItems[3].Text;
                 ZRokEndBox1.Text = ZespolyList.SelectedItems[0].SubItems[4].Text;
-                ID_Selected_Zespol = Int32.Parse(MOcenyList.SelectedItems[0].SubItems[0].Text);
+                ID_Selected_Zespol = Int32.Parse(ZespolyList.SelectedItems[0].SubItems[0].Text);
+
             }
         }
 
         private void PSzukaj_Click(object sender, EventArgs e)
         {
             string NazwaV, ZespolV, GatunekV;
-            int PlytaID, RokV, SciezkiV, AvgV;
-
+            int PlytaID, RokV, SciezkiV;
+            double AvgV;
             string Nazwa = PNazwaBox.Text;
             string Gatunek = PGatunekBox.Text;
             string Zespol = PZespolBox.Text;
@@ -348,12 +349,20 @@ namespace ProjektGrupowy
                     RokV = Data.GetInt32(4);
                     SciezkiV = Data.GetInt32(5);
 
-                    string GetAvgPlyta = "select AVG(Ocena.Ocena) from Ocena " +
-                                       "where Ocena.ID_plyta = " + PlytaID +
+                    string GetAvgPlyta = "select AVG(cast((Ocena)as decimal(2,0))) from Ocena " +
+                                       "where Ocena.ID_plyta = " + PlytaID + " "+
                                        "group by Ocena.ID_plyta";                   // poprawic zapytanie zeby AVG nie zwracało int
                     SqlDataReader Data1 = Connect(TypeOfAction.Select, GetAvgPlyta);
                     Data1.Read();
-                    AvgV = Data1.GetInt32(0);
+                    if(Data1.IsDBNull(0))
+                    {
+                        AvgV = 0.0;
+                    }
+                    else
+                    {
+                        AvgV = (double) Data1.GetDecimal(0);
+                    }
+
                     Data1.Close();
 
                     PlytyList.Items.Add(new ListViewItem(new[] { PlytaID.ToString(), NazwaV, GatunekV, ZespolV, RokV.ToString(), SciezkiV.ToString(), AvgV.ToString() }));
@@ -495,8 +504,45 @@ namespace ProjektGrupowy
 
         private void ZPlytyButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Dodać komunikat, gdy nie  jest wybrany zespół");
-            PanelTabControl.SelectedTab = TabPlyty;
+            double Avg;
+            if (ID_Selected_Zespol != 0)
+            {
+                PanelTabControl.SelectedTab = TabPlyty;
+                PlytyList.Items.Clear();
+                string GetPlyty = " select Plyta.ID_Plyta, Plyta.Nazwa, Gatunek.Nazwa, Zespol.Nazwa, Plyta.Rok_wydania, Plyta.Ilosc_Sciezek " +
+                    "from dbo.Plyta " +
+                    "inner join Gatunek on Gatunek.Id_gatunek = Plyta.Id_Gatunek " +
+                    "inner join Zespol on Zespol.Id_zespol = Plyta.Id_zespol " +
+                    "where Plyta.Id_zespol = " + ID_Selected_Zespol;
+
+                SqlDataReader Data = Connect(TypeOfAction.Select, GetPlyty);
+
+                while (Data.Read())
+                {
+                    string GetAvgPlyta = "select AVG(cast((Ocena.Ocena)as decimal(2,0))) from Ocena " +
+                                       "where Ocena.ID_plyta = " + Data.GetInt32(0) + " " +
+                                       "group by Ocena.ID_plyta";                   
+                    SqlDataReader Data1 = Connect(TypeOfAction.Select, GetAvgPlyta);
+                    Data1.Read();
+                    if (Data1.IsDBNull(0))
+                    {
+                        Avg = 0.0;
+                    }
+                    else
+                    {
+                        Avg = (double)Data1.GetDecimal(0);
+                    }
+                    Data1.Close();
+                    PlytyList.Items.Add(new ListViewItem(new[] { Data.GetInt32(0).ToString(), Data.GetString(1), Data.GetString(2), Data.GetString(3), Data.GetInt32(4).ToString(), Data.GetInt32(5).ToString(), Avg.ToString() }));
+                    
+                }
+                Data.Close();
+
+            }
+            else
+            {
+                MessageBox.Show("Wybierz zespół");
+            }
         }
 
         public void Dane_uzytkownika_Show()
@@ -621,7 +667,24 @@ namespace ProjektGrupowy
             {
                 CB.Items.Add(i);
             }
+        }
+        private void DropDownItems_Sciezki(ComboBox CB) // Rok jako item do ComboBoxow
+        {
+            for (int i = 1; i <= 50; i++)
+            {
+                CB.Items.Add(i);
+            }
+        }
 
+        private void DropDownItems_Zespol(ComboBox CB) // Pobiera gatunki jako itemy do ComboBoxow
+        {
+            string GetGatunki = "SELECT Nazwa FROM Zespol ORDER BY Nazwa desc";
+            SqlDataReader Data = Connect(TypeOfAction.Select, GetGatunki);
+            while (Data.Read())
+            {
+                CB.Items.Add(Data.GetString(0));
+            }
+            Data.Close();
         }
 
         private void TabZespoly_Enter(object sender, EventArgs e) // Uzupełnienie ComboBoxów
@@ -640,6 +703,16 @@ namespace ProjektGrupowy
                 return 1;
             else
                 return 0;
+        }
+
+        private void TabPlyty_Enter(object sender, EventArgs e)
+        {
+            DropDownItems_Gatunek(PGatunekBox);
+            DropDownItems_Gatunek(PGatunekBox1);
+            DropDownItems_Rok(PRokBox);
+            DropDownItems_Rok(PRokBox1);
+            DropDownItems_Sciezki(PSciezkiBox1);
+            DropDownItems_Zespol(PZespolBox1);
         }
 
     }
