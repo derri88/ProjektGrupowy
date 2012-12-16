@@ -120,17 +120,14 @@ namespace ProjektGrupowy
         }
 
         private void OcenaSave_Click(object sender, EventArgs e)
-        {
-            //MessageBox.Show("Do dodania funkcja robiąca update w tabeli z ocenami");
-            //int ocena = Int32.Parse(OcenaBox.Text);
-
+        {                        
             string UpdateOcena =
                 "update Ocena " +
-                "set Ocena = " + OcenaBox.Text + //+ ocena + //!!! DLA KUBY!!!Nie musisz "przerabiac oceny z txt w textbox na int, bo do zapytania i tak tylko txt idzie :)/
-                "where Ocena.ID_plyta = " + ID_Selected_MPlyta +" and Ocena.ID_user = " + Program.ID_zalogowanego;
-
+                "set Ocena = " + OcenaBox.Text +
+                "where Ocena.ID_plyta = " + ID_Selected_MPlyta + " and Ocena.ID_user = " + Program.ID_zalogowanego;
             SqlDataReader Data = Connect(TypeOfAction.Update, UpdateOcena);
-
+            MessageBox.Show("Zmiana oceny powiodła się");
+            
             MOcenyList.Items.Clear();
             this.Plyty_uzytkownika_Show();
         }
@@ -380,15 +377,35 @@ namespace ProjektGrupowy
             else
             {
                 MessageBox.Show("Nie zaznaczono żadnego warunku wyszukiwania lub pola pozostały puste");
-            }
-
-            
-            
+            }         
         }
 
         private void POcenaDodaj_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("jeśli oceny brak - insert, jeśli ocena jest - update");
+            if (POcenaBox.Text != "0")
+            {
+                if (CzyPlytaOceniona())
+                {
+                    string UpdateOcena =
+                    "update Ocena " +
+                    "set Ocena = " + POcenaBox.Text +
+                    "where Ocena.ID_plyta = " + ID_Selected_Plyta + " and Ocena.ID_user = " + Program.ID_zalogowanego;
+
+                    SqlDataReader Data = Connect(TypeOfAction.Update, UpdateOcena);
+                }
+                else
+                {
+                    string InsertOcena =
+                    "insert into Ocena values (" + ID_Selected_Plyta + ", " + Program.ID_zalogowanego + ", " + Int32.Parse(POcenaBox.Text) + ", '')";
+                    SqlDataReader Data = Connect(TypeOfAction.Update, InsertOcena);
+                }
+                MessageBox.Show("Zapis zakończony sukcesem");
+            }
+            else
+            {
+                MessageBox.Show("Zapis nie powiódł się");
+            }
+
         }
 
         private void PEditButton_Click(object sender, EventArgs e)
@@ -766,6 +783,25 @@ namespace ProjektGrupowy
                 }
                 Data.Close();
             }
+        }
+
+        private void TabMojeOceny_Enter(object sender, EventArgs e)
+        {
+            MOcenyList.Items.Clear();
+            Plyty_uzytkownika_Show();
+        }
+        private bool CzyPlytaOceniona()
+        {   
+            bool b = false;
+            string GetOcena = "SELECT Ocena FROM Ocena WHERE ID_Plyta = " + ID_Selected_Plyta + "and ID_user = " + Program.ID_zalogowanego;
+            SqlDataReader Data = Connect(TypeOfAction.Select, GetOcena);
+            Data.Read();
+            if (Data.HasRows)
+            {
+                b = true;
+            }
+            Data.Close();
+            return b;
         }
     }
 }

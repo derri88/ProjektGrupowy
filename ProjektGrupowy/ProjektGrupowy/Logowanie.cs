@@ -94,7 +94,6 @@ namespace ProjektGrupowy
                 Panel Panel = new Panel();
                 Panel.Show();
                 Panel.Dane_uzytkownika_Show();
-                Panel.Plyty_uzytkownika_Show();
                 Program.Start1.Hide();
                 this.Close();
             }

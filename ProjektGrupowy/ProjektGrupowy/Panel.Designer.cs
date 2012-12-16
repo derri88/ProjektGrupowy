@@ -213,6 +213,7 @@
             this.TabMojeOceny.Text = "Moje oceny";
             this.TabMojeOceny.UseVisualStyleBackColor = true;
             this.TabMojeOceny.Click += new System.EventHandler(this.TabMojeOceny_Click);
+            this.TabMojeOceny.Enter += new System.EventHandler(this.TabMojeOceny_Enter);
             // 
             // DaneGroup
             // 
@@ -378,6 +379,7 @@
             // 
             // PlecBox
             // 
+            this.PlecBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.PlecBox.FormattingEnabled = true;
             this.PlecBox.Items.AddRange(new object[] {
             "Mężczyzna",
@@ -459,6 +461,7 @@
             // 
             // OcenaBox
             // 
+            this.OcenaBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.OcenaBox.Enabled = false;
             this.OcenaBox.FormattingEnabled = true;
             this.OcenaBox.Items.AddRange(new object[] {
@@ -781,6 +784,7 @@
             // 
             // ZRokEndBox1
             // 
+            this.ZRokEndBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ZRokEndBox1.Enabled = false;
             this.ZRokEndBox1.FormattingEnabled = true;
             this.ZRokEndBox1.Location = new System.Drawing.Point(91, 99);
@@ -799,6 +803,7 @@
             // 
             // ZRokStBox1
             // 
+            this.ZRokStBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ZRokStBox1.Enabled = false;
             this.ZRokStBox1.FormattingEnabled = true;
             this.ZRokStBox1.Location = new System.Drawing.Point(91, 72);
@@ -843,6 +848,7 @@
             // 
             // ZGatunekBox1
             // 
+            this.ZGatunekBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ZGatunekBox1.Enabled = false;
             this.ZGatunekBox1.FormattingEnabled = true;
             this.ZGatunekBox1.Location = new System.Drawing.Point(91, 45);
@@ -952,6 +958,7 @@
             // 
             // ZRokEndBox
             // 
+            this.ZRokEndBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ZRokEndBox.FormattingEnabled = true;
             this.ZRokEndBox.Location = new System.Drawing.Point(87, 154);
             this.ZRokEndBox.Name = "ZRokEndBox";
@@ -1035,6 +1042,7 @@
             // 
             // ZRokStBox
             // 
+            this.ZRokStBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ZRokStBox.FormattingEnabled = true;
             this.ZRokStBox.Location = new System.Drawing.Point(87, 71);
             this.ZRokStBox.Name = "ZRokStBox";
@@ -1070,6 +1078,7 @@
             // 
             // ZGatunekBox
             // 
+            this.ZGatunekBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ZGatunekBox.FormattingEnabled = true;
             this.ZGatunekBox.Location = new System.Drawing.Point(87, 44);
             this.ZGatunekBox.Name = "ZGatunekBox";
@@ -1218,6 +1227,7 @@
             // 
             // PZespolBox1
             // 
+            this.PZespolBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.PZespolBox1.Enabled = false;
             this.PZespolBox1.FormattingEnabled = true;
             this.PZespolBox1.Location = new System.Drawing.Point(91, 72);
@@ -1268,6 +1278,7 @@
             // 
             // POcenaBox
             // 
+            this.POcenaBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.POcenaBox.Enabled = false;
             this.POcenaBox.FormattingEnabled = true;
             this.POcenaBox.Items.AddRange(new object[] {
@@ -1289,6 +1300,7 @@
             // 
             // PSciezkiBox1
             // 
+            this.PSciezkiBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.PSciezkiBox1.Enabled = false;
             this.PSciezkiBox1.FormattingEnabled = true;
             this.PSciezkiBox1.Location = new System.Drawing.Point(91, 127);
@@ -1362,6 +1374,7 @@
             // 
             // PRokBox1
             // 
+            this.PRokBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.PRokBox1.Enabled = false;
             this.PRokBox1.FormattingEnabled = true;
             this.PRokBox1.Location = new System.Drawing.Point(91, 99);
@@ -1406,6 +1419,7 @@
             // 
             // PGatunekBox1
             // 
+            this.PGatunekBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.PGatunekBox1.Enabled = false;
             this.PGatunekBox1.FormattingEnabled = true;
             this.PGatunekBox1.Location = new System.Drawing.Point(91, 45);
@@ -1542,6 +1556,7 @@
             // 
             // PRokBox
             // 
+            this.PRokBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.PRokBox.FormattingEnabled = true;
             this.PRokBox.Location = new System.Drawing.Point(87, 99);
             this.PRokBox.Name = "PRokBox";
@@ -1568,6 +1583,7 @@
             // 
             // PGatunekBox
             // 
+            this.PGatunekBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.PGatunekBox.FormattingEnabled = true;
             this.PGatunekBox.Location = new System.Drawing.Point(87, 44);
             this.PGatunekBox.Name = "PGatunekBox";
