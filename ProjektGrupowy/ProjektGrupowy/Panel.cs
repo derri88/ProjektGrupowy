@@ -19,7 +19,8 @@ namespace ProjektGrupowy
         public static int ID_Selected_Plyta = 0;
         public string NickData, ImieData, NazwiskoData, KrajData, MiastoData, MailData, StatusData;
         public DateTime Data_ur;
-        public int PlecData;
+        public int PlecData, ZespolID;
+        public string Istnieja = "Istnieją";
 
         public Panel()
         {
@@ -274,8 +275,10 @@ namespace ProjektGrupowy
         {
             //MessageBox.Show("Do dodania funkcja która zapełni wynikami wyszukiwania listę po prawej, i wyświetli w grupie zespół pierwszy item z listy");
             string ZespolV, GatunekV;
-            int ZespolID, RokStV, CountV;
-            int? RokEndV;
+            //int ZespolID, RokStV, CountV;
+            int RokStV, CountV;
+            //int? RokEndV;
+            string RokEndV;
             
             string Nazwa = ZNazwaBox.Text;
             string Gatunek = ZGatunekBox.Text;
@@ -340,9 +343,9 @@ namespace ProjektGrupowy
                     GatunekV = Data.GetString(2);
                     RokStV = Data.GetInt32(3);
                     if (Data.IsDBNull(4))
-                        RokEndV = 0;
+                        RokEndV = Istnieja;
                     else
-                        RokEndV = Data.GetInt32(4);
+                        RokEndV = Data.GetInt32(4).ToString();
 
                     string GetCountPlyty = "select COUNT(*) from Plyta " +
                                        "where Plyta.ID_zespol = " + ZespolID +
@@ -382,8 +385,27 @@ namespace ProjektGrupowy
 
         private void ZSaveButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("gdy edycja - update; gdy nowy - insert; na koniec zablokuje pola powyżej");
+            //MessageBox.Show("gdy edycja - update; gdy nowy - insert; na koniec zablokuje pola powyżej");
+            string EndRok;
+
+            if (ZRokEndBox1.SelectedIndex == 0) { EndRok = ", Z.Rok_End = NULL"; }
+            else {EndRok = ", Z.Rok_End = " + ZRokEndBox1.Text;}
+
+
+            String UpdateZespol =   "UPDATE Z " +
+                                    "SET " +
+                                    "Z.ID_gatunek = (SELECT Gatunek.ID_gatunek FROM Gatunek WHERE Gatunek.Nazwa = '" + ZGatunekBox1.Text +
+                                    "'), Z.Nazwa = '" + ZNazwaBox1.Text +
+                                    "', Z.Rok_Start = " + ZRokStBox1.Text +
+                                    EndRok +
+                                    " FROM Zespol Z INNER JOIN Gatunek ON Gatunek.Id_gatunek = Z.Id_Gatunek" + 
+                                    " where ID_zespol = " + ID_Selected_Zespol;
+
+            Connect(TypeOfAction.Update, UpdateZespol);
+
+            ZSzukaj_Click(sender,e);
             this.ZZablokuj();
+            ZWyczysc();
             ZEditButton.Enabled = true;
             ZNewButton.Enabled = true;
         }
@@ -424,10 +446,10 @@ namespace ProjektGrupowy
 
         private void ZWyczysc()
         {
-            ZNazwaBox1.Text = "";
-            ZGatunekBox1.Text = "";
-            ZRokEndBox1.Text = "";
-            ZRokStBox1.Text = "";
+            ZNazwaBox1.Text = null;
+            ZGatunekBox1.Text = null;
+            ZRokEndBox1.Text = null;
+            ZRokStBox1.Text = null;
         }
 
         private void ZCancel_Click(object sender, EventArgs e)
@@ -776,6 +798,7 @@ namespace ProjektGrupowy
 
         private void DropDownItems_Rok(ComboBox CB) // Rok jako item do ComboBoxow
         {
+            CB.Items.Add(Istnieja);
             for (int i = 1900; i<= DateTime.Now.Year; i++)
             {
                 CB.Items.Add(i);
