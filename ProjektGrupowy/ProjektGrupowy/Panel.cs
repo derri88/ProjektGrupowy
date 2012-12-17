@@ -381,6 +381,7 @@ namespace ProjektGrupowy
             this.ZWyczysc();
             ZEditButton.Enabled = false;
             ZNewButton.Enabled = false;
+            //ZespolyList.SelectedItems.Clear(); // Odkomentować, jeżeli po naciśnięciu przycisku "Dodaj" nie chcemy miec zaznaczonego żadnego rekordu, gdy anulujemy akcję ( naciśnięcie przycisku "Przerwij").
         }
 
         private void ZSaveButton_Click(object sender, EventArgs e)
@@ -406,7 +407,6 @@ namespace ProjektGrupowy
             ZSzukaj_Click(sender,e);
             this.ZZablokuj();
             ZWyczysc();
-            ZEditButton.Enabled = true;
             ZNewButton.Enabled = true;
         }
 
@@ -421,6 +421,7 @@ namespace ProjektGrupowy
                 ZRokStBox1.Text = ZespolyList.SelectedItems[0].SubItems[3].Text;
                 ZRokEndBox1.Text = ZespolyList.SelectedItems[0].SubItems[4].Text;
                 ID_Selected_Zespol = Int32.Parse(ZespolyList.SelectedItems[0].SubItems[0].Text);
+                ZEditButton.Enabled = true;
             }
         }
 
@@ -456,7 +457,12 @@ namespace ProjektGrupowy
         {
             MessageBox.Show("wyświetl zaznaczony item z litView; na koniec zablokuje pola powyżej");
             this.ZZablokuj();
-            ZEditButton.Enabled = true;
+            ZWyczysc();
+            if (ZespolyList.SelectedItems.Count != 0 ) 
+            {
+                ZEditButton.Enabled = true;
+                ZespolyList_SelectedIndexChanged(sender, e);
+            }
             ZNewButton.Enabled = true;
         }
 
@@ -528,6 +534,7 @@ namespace ProjektGrupowy
             DropDownItems_Rok(ZRokStBox);
             DropDownItems_RokZakonczenia(ZRokEndBox1);
             DropDownItems_Rok(ZRokStBox1);
+            ZEditButton.Enabled = false;
         } // 2 ZAKLADKA (Zespoly)
 
 /*############################ KONIEC  2 ZAKLADKA (Zespoly) ###########################################################################################*/
