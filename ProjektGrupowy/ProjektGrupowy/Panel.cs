@@ -524,9 +524,9 @@ namespace ProjektGrupowy
         {
             DropDownItems_Gatunek(ZGatunekBox);
             DropDownItems_Gatunek(ZGatunekBox1);
-            DropDownItems_Rok(ZRokEndBox);
+            DropDownItems_RokZakonczenia(ZRokEndBox);
             DropDownItems_Rok(ZRokStBox);
-            DropDownItems_Rok(ZRokEndBox1);
+            DropDownItems_RokZakonczenia(ZRokEndBox1);
             DropDownItems_Rok(ZRokStBox1);
         } // 2 ZAKLADKA (Zespoly)
 
@@ -798,8 +798,16 @@ namespace ProjektGrupowy
 
         private void DropDownItems_Rok(ComboBox CB) // Rok jako item do ComboBoxow
         {
-            CB.Items.Add(Istnieja);
             for (int i = 1900; i<= DateTime.Now.Year; i++)
+            {
+                CB.Items.Add(i);
+            }
+        }
+
+        private void DropDownItems_RokZakonczenia(ComboBox CB) // Rok jako item do ComboBoxow
+        {
+            CB.Items.Add(Istnieja);
+            for (int i = 1900; i <= DateTime.Now.Year; i++)
             {
                 CB.Items.Add(i);
             }
