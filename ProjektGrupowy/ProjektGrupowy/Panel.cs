@@ -12,6 +12,8 @@ namespace ProjektGrupowy
 {
     public partial class Panel : Form
     {
+/*############################ OGOLNE #################################################################################################################*/   
+        // OGOLNE
         public static int ID_Selected_MPlyta = 0;
         public static int ID_Selected_Zespol = 0;
         public static int ID_Selected_Plyta = 0;
@@ -60,8 +62,7 @@ namespace ProjektGrupowy
             return null;
         }
 
-        // Inny sposob na auto połączenie z bazą - zwracający SqlCommand zamiast SqlDataReader (wg. mnie gorszy sposob dlatego nie uzywam i komentuje, ale może kiedyś się przydać(brak mozliwosci uzycia SqlDataReader-a) , więc nie usuwam.
-        /*public SqlCommand Connect1(TypeOfAction TOA, string Query)
+        /*public SqlCommand Connect1(TypeOfAction TOA, string Query)  // Inny sposob na auto połączenie z bazą - zwracający SqlCommand zamiast SqlDataReader (wg. mnie gorszy sposob dlatego nie uzywam i komentuje, ale może kiedyś się przydać(brak mozliwosci uzycia SqlDataReader-a) , więc nie usuwam.
         {
             string ConnectionString = "Server=ProjektGrupowy.mssql.somee.com; Database=ProjektGrupowy; User ID=derri_SQLLogin_1; Password=pe2fjz4yh9;";
             SqlConnection Conn = new SqlConnection(ConnectionString);
@@ -88,6 +89,10 @@ namespace ProjektGrupowy
             return DataCmd;
         }*/
 
+/*############################ KONIEC OGOLNE ##########################################################################################################*/
+
+/*############################ 1 ZAKLADKA (Moje Oceny) ################################################################################################*/
+        // 1 ZAKLADKA (Moje Oceny)
         private void DaneSave_Click(object sender, EventArgs e)
         {
             if (ImieBox.Text == ImieData &&
@@ -149,7 +154,122 @@ namespace ProjektGrupowy
             }
             //MessageBox.Show(ID_Selected_MPlyta.ToString());
         }
-        
+
+        public void Dane_uzytkownika_Show()
+        {
+            //string Nick, Imie, Nazwisko, Kraj, Miasto, Mail, Status;
+            //DateTime Data_ur;
+            //int Plec;
+            int ID = Program.ID_zalogowanego;
+            string GetDane_user =
+                "SELECT Users.Nick, Users.Imie, Users.Nazwisko, Users.Kraj, Users.Miasto, Users.Mail, Status.Nazwa, Users.Data_urodzenia, Users.Id_plec " +
+                "FROM Users INNER JOIN Status on Status.ID_status = Users.ID_status " +
+                "WHERE Users.ID_user = " + ID;
+
+            SqlDataReader Data = Connect(TypeOfAction.Select, GetDane_user);
+
+            Data.Read();
+            NickData = Data.GetString(0);
+            ImieData = Data.GetString(1);
+            if (Data.IsDBNull(2))
+            {
+                Nazwisko = null;
+            }
+            else { NazwiskoData = Data.GetString(2); ; }
+            if (Data.IsDBNull(3))
+            {
+                Kraj = null;
+            }
+            else { KrajData = Data.GetString(3); }
+            if (Data.IsDBNull(4))
+            {
+                Miasto = null;
+            }
+            else { MiastoData = Data.GetString(4); }
+            MailData = Data.GetString(5);
+            StatusData = Data.GetString(6);
+
+            if (Data.IsDBNull(7))
+            {
+                DataBox.Checked = false;
+                DataBox.Format = DateTimePickerFormat.Custom;
+                DataBox.CustomFormat = " ";
+            }
+            else
+            {
+                Data_ur = Data.GetDateTime(7);
+                DataBox.Value = Data_ur;
+            }
+            PlecData = Data.GetInt32(8);
+
+            NickBox.Text = NickData;
+            ImieBox.Text = ImieData;
+            NazwiskoBox.Text = NazwiskoData;
+            KrajBox.Text = KrajData;
+            MiastoBox.Text = MiastoData;
+            MailBox.Text = MailData;
+            StatusBox.Text = StatusData;
+            PlecBox.SelectedIndex = PlecData - 1;
+
+            Data.Close();
+        }
+
+        public void Plyty_uzytkownika_Show()
+        {
+            int ID = Program.ID_zalogowanego;
+
+            string Plyta, Zespol, Gatunek;
+            int Rok, Sciezki, Ocena, ID_Plyta;
+
+            string GetDane_plyty =
+                "Select Plyta.Nazwa, Zespol.Nazwa, Gatunek.Nazwa, Plyta.Rok_wydania, Plyta.Ilosc_sciezek, Ocena.Ocena, Ocena.ID_plyta " +
+                "from Ocena " +
+                "inner join Plyta on Plyta.ID_plyta = Ocena.ID_plyta " +
+                "inner join Zespol on Zespol.ID_zespol = Plyta.ID_zespol " +
+                "inner join Gatunek on Gatunek.ID_gatunek = Plyta.ID_gatunek " +
+                "where Ocena.ID_user = " + ID;
+
+            SqlDataReader Data = Connect(TypeOfAction.Select, GetDane_plyty);
+
+            while (Data.Read())
+            {
+                Plyta = Data.GetString(0);
+                Zespol = Data.GetString(1);
+                Gatunek = Data.GetString(2);
+                Rok = Data.GetInt32(3);
+                Sciezki = Data.GetInt32(4);
+                Ocena = Data.GetInt32(5);
+                ID_Plyta = Data.GetInt32(6);
+
+                MOcenyList.Items.Add(new ListViewItem(new[] { ID_Plyta.ToString(), Plyta, Zespol, Gatunek, Rok.ToString(), Sciezki.ToString(), Ocena.ToString() }));
+            }
+            Data.Close();
+        }
+
+        private void DataBox_ValueChanged(object sender, EventArgs e)
+        {
+            if (DataBox.Checked == true)
+            {
+                DataBox.Format = DateTimePickerFormat.Short;
+            }
+
+            else
+            {
+                DataBox.Format = DateTimePickerFormat.Custom;
+                DataBox.CustomFormat = " ";
+            }
+        }
+
+        private void TabMojeOceny_Enter(object sender, EventArgs e)
+        {
+            MOcenyList.Items.Clear();
+            Plyty_uzytkownika_Show();
+        }
+
+/*############################ KONIEC  1 ZAKLADKA (Moje Oceny) ########################################################################################*/
+
+/*############################ 2 ZAKLADKA (Zespoly) ###################################################################################################*/
+        // 2 ZAKLADKA (Zespoly)
         private void ZSzukaj_Click(object sender, EventArgs e)
         {
             //MessageBox.Show("Do dodania funkcja która zapełni wynikami wyszukiwania listę po prawej, i wyświetli w grupie zespół pierwszy item z listy");
@@ -282,6 +402,116 @@ namespace ProjektGrupowy
             }
         }
 
+        private void ZOdblokuj()
+        {
+            ZNazwaBox1.Enabled = true;
+            ZGatunekBox1.Enabled = true;
+            ZRokEndBox1.Enabled = true;
+            ZRokStBox1.Enabled = true;
+            ZCancel.Enabled = true;
+            ZSaveButton.Enabled = true;
+        }
+
+        private void ZZablokuj()
+        {
+            ZNazwaBox1.Enabled = false;
+            ZGatunekBox1.Enabled = false;
+            ZRokEndBox1.Enabled = false;
+            ZRokStBox1.Enabled = false;
+            ZCancel.Enabled = false;
+            ZSaveButton.Enabled = false;
+        }
+
+        private void ZWyczysc()
+        {
+            ZNazwaBox1.Text = "";
+            ZGatunekBox1.Text = "";
+            ZRokEndBox1.Text = "";
+            ZRokStBox1.Text = "";
+        }
+
+        private void ZCancel_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("wyświetl zaznaczony item z litView; na koniec zablokuje pola powyżej");
+            this.ZZablokuj();
+            ZEditButton.Enabled = true;
+            ZNewButton.Enabled = true;
+        }
+
+        private void ZPlytyButton_Click(object sender, EventArgs e)
+        {
+            double Avg;
+            if (ID_Selected_Zespol != 0)
+            {
+                Plyty_SzukajClear();
+                PanelTabControl.SelectedTab = TabPlyty;
+                ID_Selected_Plyta = 0;
+                POcenaBox.Enabled = false;
+                POcenaDodaj.Enabled = false;
+                PlytyList.Items.Clear();
+                string GetPlyty = " select Plyta.ID_Plyta, Plyta.Nazwa, Gatunek.Nazwa, Zespol.Nazwa, Plyta.Rok_wydania, Plyta.Ilosc_Sciezek " +
+                    "from dbo.Plyta " +
+                    "inner join Gatunek on Gatunek.Id_gatunek = Plyta.Id_Gatunek " +
+                    "inner join Zespol on Zespol.Id_zespol = Plyta.Id_zespol " +
+                    "where Plyta.Id_zespol = " + ID_Selected_Zespol;
+
+                SqlDataReader Data = Connect(TypeOfAction.Select, GetPlyty);
+
+                while (Data.Read())
+                {
+                    string GetAvgPlyta = "select AVG(cast((Ocena.Ocena)as decimal(2,0))) from Ocena " +
+                                       "where Ocena.ID_plyta = " + Data.GetInt32(0) + " " +
+                                       "group by Ocena.ID_plyta";
+                    SqlDataReader Data1 = Connect(TypeOfAction.Select, GetAvgPlyta);
+                    Data1.Read();
+                    if (Data1.IsDBNull(0))
+                    {
+                        Avg = 0.0;
+                    }
+                    else
+                    {
+                        Avg = (double)Data1.GetDecimal(0);
+                    }
+                    Data1.Close();
+                    PlytyList.Items.Add(new ListViewItem(new[] { Data.GetInt32(0).ToString(), Data.GetString(1), Data.GetString(2), Data.GetString(3), Data.GetInt32(4).ToString(), Data.GetInt32(5).ToString(), Avg.ToString() }));
+
+                }
+                Data.Close();
+
+            }
+            else
+            {
+                MessageBox.Show("Wybierz zespół");
+            }
+        }
+
+        private void Plyty_SzukajClear()
+        {
+            PNazwaBox.Text = "";
+            PNazwaCheck.Checked = false;
+            PGatunekBox.Text = "";
+            PGatunekCheck.Checked = false;
+            PZespolBox.Text = "";
+            PZespolCheck.Checked = false;
+            PRokBox.Text = "";
+            PRokCheck.Checked = false;
+            RadioRok3.Checked = true;
+        }
+
+        private void TabZespoly_Enter(object sender, EventArgs e) // Uzupełnienie ComboBoxów
+        {
+            DropDownItems_Gatunek(ZGatunekBox);
+            DropDownItems_Gatunek(ZGatunekBox1);
+            DropDownItems_Rok(ZRokEndBox);
+            DropDownItems_Rok(ZRokStBox);
+            DropDownItems_Rok(ZRokEndBox1);
+            DropDownItems_Rok(ZRokStBox1);
+        } // 2 ZAKLADKA (Zespoly)
+
+/*############################ KONIEC  2 ZAKLADKA (Zespoly) ###########################################################################################*/
+
+/*############################ 3 ZAKLADKA (Plyty) #####################################################################################################*/
+        // 3 ZAKLADKA (Plyty)
         private void PSzukaj_Click(object sender, EventArgs e)
         {
             string NazwaV, ZespolV, GatunekV;
@@ -433,61 +663,6 @@ namespace ProjektGrupowy
             PNewButton.Enabled = true;
         }
 
-        private void Panel_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Program.Start1.Show();
-        }
-
-        private void TabMojeOceny_Click(object sender, EventArgs e)
-        {
-            //TabMojeOceny.Invalidate();
-        }
-
-        private void TabZespoly_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TabPlyty_Click(object sender, EventArgs e)
-        {
-            //TabPlyty.Invalidate();
-        }
-
-        private void ZCancel_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("wyświetl zaznaczony item z litView; na koniec zablokuje pola powyżej");
-            this.ZZablokuj();
-            ZEditButton.Enabled = true;
-            ZNewButton.Enabled = true;
-        }
-
-        private void ZOdblokuj()
-        {
-            ZNazwaBox1.Enabled = true;
-            ZGatunekBox1.Enabled = true;
-            ZRokEndBox1.Enabled = true;
-            ZRokStBox1.Enabled = true;
-            ZCancel.Enabled = true;
-            ZSaveButton.Enabled = true;
-        }
-
-        private void ZZablokuj()
-        {
-            ZNazwaBox1.Enabled = false;
-            ZGatunekBox1.Enabled = false;
-            ZRokEndBox1.Enabled = false;
-            ZRokStBox1.Enabled = false;
-            ZCancel.Enabled = false;
-            ZSaveButton.Enabled = false;
-        }
-
-        private void ZWyczysc()
-        {
-            ZNazwaBox1.Text = "";
-            ZGatunekBox1.Text = "";
-            ZRokEndBox1.Text = "";
-            ZRokStBox1.Text = "";
-        }
         private void POdblokuj()
         {
             PNazwaBox1.Enabled = true;
@@ -527,234 +702,18 @@ namespace ProjektGrupowy
             PNewButton.Enabled = true;
         }
 
-        private void ZPlytyButton_Click(object sender, EventArgs e)
+        private bool CzyPlytaOceniona()
         {
-            double Avg;
-            if (ID_Selected_Zespol != 0)
-            {
-                Plyty_SzukajClear();
-                PanelTabControl.SelectedTab = TabPlyty;
-                ID_Selected_Plyta = 0;
-                POcenaBox.Enabled = false;
-                POcenaDodaj.Enabled = false;
-                PlytyList.Items.Clear();
-                string GetPlyty = " select Plyta.ID_Plyta, Plyta.Nazwa, Gatunek.Nazwa, Zespol.Nazwa, Plyta.Rok_wydania, Plyta.Ilosc_Sciezek " +
-                    "from dbo.Plyta " +
-                    "inner join Gatunek on Gatunek.Id_gatunek = Plyta.Id_Gatunek " +
-                    "inner join Zespol on Zespol.Id_zespol = Plyta.Id_zespol " +
-                    "where Plyta.Id_zespol = " + ID_Selected_Zespol;
-
-                SqlDataReader Data = Connect(TypeOfAction.Select, GetPlyty);
-
-                while (Data.Read())
-                {
-                    string GetAvgPlyta = "select AVG(cast((Ocena.Ocena)as decimal(2,0))) from Ocena " +
-                                       "where Ocena.ID_plyta = " + Data.GetInt32(0) + " " +
-                                       "group by Ocena.ID_plyta";                   
-                    SqlDataReader Data1 = Connect(TypeOfAction.Select, GetAvgPlyta);
-                    Data1.Read();
-                    if (Data1.IsDBNull(0))
-                    {
-                        Avg = 0.0;
-                    }
-                    else
-                    {
-                        Avg = (double)Data1.GetDecimal(0);
-                    }
-                    Data1.Close();
-                    PlytyList.Items.Add(new ListViewItem(new[] { Data.GetInt32(0).ToString(), Data.GetString(1), Data.GetString(2), Data.GetString(3), Data.GetInt32(4).ToString(), Data.GetInt32(5).ToString(), Avg.ToString() }));
-                    
-                }
-                Data.Close();
-
-            }
-            else
-            {
-                MessageBox.Show("Wybierz zespół");
-            }
-        }
-
-        public void Dane_uzytkownika_Show()
-        {
-            //string Nick, Imie, Nazwisko, Kraj, Miasto, Mail, Status;
-            //DateTime Data_ur;
-            //int Plec;
-            int ID = Program.ID_zalogowanego;
-            string GetDane_user =
-                "SELECT Users.Nick, Users.Imie, Users.Nazwisko, Users.Kraj, Users.Miasto, Users.Mail, Status.Nazwa, Users.Data_urodzenia, Users.Id_plec " +
-                "FROM Users INNER JOIN Status on Status.ID_status = Users.ID_status " +
-                "WHERE Users.ID_user = " + ID;
-
-            SqlDataReader Data = Connect(TypeOfAction.Select, GetDane_user);
-
+            bool b = false;
+            string GetOcena = "SELECT Ocena FROM Ocena WHERE ID_Plyta = " + ID_Selected_Plyta + "and ID_user = " + Program.ID_zalogowanego;
+            SqlDataReader Data = Connect(TypeOfAction.Select, GetOcena);
             Data.Read();
-            NickData = Data.GetString(0);
-            ImieData = Data.GetString(1);
-            if (Data.IsDBNull(2))
+            if (Data.HasRows)
             {
-                Nazwisko = null;
-            }
-            else { NazwiskoData = Data.GetString(2); ; }
-            if (Data.IsDBNull(3))
-            {
-                Kraj = null;
-            }
-            else { KrajData = Data.GetString(3); }
-            if (Data.IsDBNull(4))
-            {
-                Miasto = null;
-            }
-            else { MiastoData = Data.GetString(4); }
-            MailData = Data.GetString(5);
-            StatusData = Data.GetString(6);
-
-            if (Data.IsDBNull(7))
-            {
-                DataBox.Checked = false;
-                DataBox.Format = DateTimePickerFormat.Custom;
-                DataBox.CustomFormat = " ";
-            }
-            else
-            {
-                Data_ur = Data.GetDateTime(7);
-                DataBox.Value = Data_ur;
-            }
-            PlecData = Data.GetInt32(8);
-
-            NickBox.Text = NickData;
-            ImieBox.Text = ImieData;
-            NazwiskoBox.Text = NazwiskoData;
-            KrajBox.Text = KrajData;
-            MiastoBox.Text = MiastoData;
-            MailBox.Text = MailData;
-            StatusBox.Text = StatusData;
-            PlecBox.SelectedIndex = PlecData - 1;
-
-            Data.Close();
-        }
-
-        public void Plyty_uzytkownika_Show()
-        {
-            int ID = Program.ID_zalogowanego;
-
-            string Plyta, Zespol, Gatunek;
-            int  Rok, Sciezki, Ocena, ID_Plyta;
-
-            string GetDane_plyty =
-                "Select Plyta.Nazwa, Zespol.Nazwa, Gatunek.Nazwa, Plyta.Rok_wydania, Plyta.Ilosc_sciezek, Ocena.Ocena, Ocena.ID_plyta " +
-                "from Ocena " +
-                "inner join Plyta on Plyta.ID_plyta = Ocena.ID_plyta " +
-                "inner join Zespol on Zespol.ID_zespol = Plyta.ID_zespol " +
-                "inner join Gatunek on Gatunek.ID_gatunek = Plyta.ID_gatunek " +
-                "where Ocena.ID_user = " + ID;
-
-            SqlDataReader Data = Connect(TypeOfAction.Select, GetDane_plyty);
-
-            while (Data.Read())
-            {
-                Plyta = Data.GetString(0);
-                Zespol = Data.GetString(1);
-                Gatunek = Data.GetString(2);
-                Rok = Data.GetInt32(3);
-                Sciezki = Data.GetInt32(4);
-                Ocena = Data.GetInt32(5);
-                ID_Plyta = Data.GetInt32(6);
-
-                MOcenyList.Items.Add(new ListViewItem(new[] { ID_Plyta.ToString(), Plyta, Zespol, Gatunek, Rok.ToString(), Sciezki.ToString(), Ocena.ToString()}));
+                b = true;
             }
             Data.Close();
-        }
-
-        private void DataBox_ValueChanged(object sender, EventArgs e)
-        {
-            if (DataBox.Checked == true)
-            {
-                DataBox.Format = DateTimePickerFormat.Short;
-            }
-
-            else
-            {
-                DataBox.Format = DateTimePickerFormat.Custom;
-                DataBox.CustomFormat = " ";
-            }
-        }
-
-        private void DropDownItems_Gatunek(ComboBox CB) // Pobiera gatunki jako itemy do ComboBoxow
-        {
-            string GetGatunki = "SELECT Nazwa FROM Gatunek";
-            SqlDataReader Data = Connect(TypeOfAction.Select, GetGatunki);
-            while (Data.Read())
-            {
-                CB.Items.Add(Data.GetString(0));
-            }
-            Data.Close();
-        }
-
-        private void DropDownItems_Rok(ComboBox CB) // Rok jako item do ComboBoxow
-        {
-            for (int i = 1900; i<= DateTime.Now.Year; i++)
-            {
-                CB.Items.Add(i);
-            }
-        }
-        private void DropDownItems_Sciezki(ComboBox CB)
-        {
-            for (int i = 1; i <= 50; i++)
-            {
-                CB.Items.Add(i);
-            }
-        }
-
-        private void DropDownItems_Zespol(ComboBox CB) 
-        {
-            string GetZespol = "SELECT Nazwa FROM Zespol ORDER BY Nazwa desc";
-            SqlDataReader Data = Connect(TypeOfAction.Select, GetZespol);
-            while (Data.Read())
-            {
-                CB.Items.Add(Data.GetString(0));
-            }
-            Data.Close();
-        }
-
-        private void TabZespoly_Enter(object sender, EventArgs e) // Uzupełnienie ComboBoxów
-        {
-            DropDownItems_Gatunek(ZGatunekBox);
-            DropDownItems_Gatunek(ZGatunekBox1);
-            DropDownItems_Rok(ZRokEndBox);
-            DropDownItems_Rok(ZRokStBox);
-            DropDownItems_Rok(ZRokEndBox1);
-            DropDownItems_Rok(ZRokStBox1);
-        }
-
-        private int If_Checked(CheckBox CB, Control CT)
-        {
-            if (CB.Checked == true & CT.Text!="")
-                return 1;
-            else
-                return 0;
-        }
-
-        private void TabPlyty_Enter(object sender, EventArgs e)
-        {
-            DropDownItems_Gatunek(PGatunekBox);
-            DropDownItems_Gatunek(PGatunekBox1);
-            DropDownItems_Rok(PRokBox);
-            DropDownItems_Rok(PRokBox1);
-            DropDownItems_Sciezki(PSciezkiBox1);
-            DropDownItems_Zespol(PZespolBox1);
-        }
-
-        private void Plyty_SzukajClear()
-        {
-            PNazwaBox.Text = "";
-            PNazwaCheck.Checked = false;
-            PGatunekBox.Text = "";
-            PGatunekCheck.Checked = false;
-            PZespolBox.Text = "";
-            PZespolCheck.Checked = false;
-            PRokBox.Text = "";
-            PRokCheck.Checked = false;
-            RadioRok3.Checked = true;
+            return b;
         }
 
         private void PlytyList_SelectedIndexChanged(object sender, EventArgs e)
@@ -785,23 +744,71 @@ namespace ProjektGrupowy
             }
         }
 
-        private void TabMojeOceny_Enter(object sender, EventArgs e)
+        private void TabPlyty_Enter(object sender, EventArgs e)
         {
-            MOcenyList.Items.Clear();
-            Plyty_uzytkownika_Show();
+            DropDownItems_Gatunek(PGatunekBox);
+            DropDownItems_Gatunek(PGatunekBox1);
+            DropDownItems_Rok(PRokBox);
+            DropDownItems_Rok(PRokBox1);
+            DropDownItems_Sciezki(PSciezkiBox1);
+            DropDownItems_Zespol(PZespolBox1);
         }
-        private bool CzyPlytaOceniona()
-        {   
-            bool b = false;
-            string GetOcena = "SELECT Ocena FROM Ocena WHERE ID_Plyta = " + ID_Selected_Plyta + "and ID_user = " + Program.ID_zalogowanego;
-            SqlDataReader Data = Connect(TypeOfAction.Select, GetOcena);
-            Data.Read();
-            if (Data.HasRows)
+
+/*############################ KONIEC  3 ZAKLADKA (Plyty) #############################################################################################*/
+
+/*############################ WSPOLNE ################################################################################################################*/
+        // WSPOLNE
+        private void Panel_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Program.Start1.Show();
+        }
+
+        private void DropDownItems_Gatunek(ComboBox CB) // Pobiera gatunki jako itemy do ComboBoxow
+        {
+            string GetGatunki = "SELECT Nazwa FROM Gatunek";
+            SqlDataReader Data = Connect(TypeOfAction.Select, GetGatunki);
+            while (Data.Read())
             {
-                b = true;
+                CB.Items.Add(Data.GetString(0));
             }
             Data.Close();
-            return b;
         }
+
+        private void DropDownItems_Rok(ComboBox CB) // Rok jako item do ComboBoxow
+        {
+            for (int i = 1900; i<= DateTime.Now.Year; i++)
+            {
+                CB.Items.Add(i);
+            }
+        }
+
+        private void DropDownItems_Sciezki(ComboBox CB)
+        {
+            for (int i = 1; i <= 50; i++)
+            {
+                CB.Items.Add(i);
+            }
+        }
+
+        private void DropDownItems_Zespol(ComboBox CB) 
+        {
+            string GetZespol = "SELECT Nazwa FROM Zespol ORDER BY Nazwa desc";
+            SqlDataReader Data = Connect(TypeOfAction.Select, GetZespol);
+            while (Data.Read())
+            {
+                CB.Items.Add(Data.GetString(0));
+            }
+            Data.Close();
+        }
+
+        private int If_Checked(CheckBox CB, Control CT)
+        {
+            if (CB.Checked == true & CT.Text!="")
+                return 1;
+            else
+                return 0;
+        }
+
+/*############################ KONIEC  WSPOLNE ########################################################################################################*/
     }
 }

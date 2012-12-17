@@ -212,7 +212,6 @@
             this.TabMojeOceny.TabIndex = 0;
             this.TabMojeOceny.Text = "Moje oceny";
             this.TabMojeOceny.UseVisualStyleBackColor = true;
-            this.TabMojeOceny.Click += new System.EventHandler(this.TabMojeOceny_Click);
             this.TabMojeOceny.Enter += new System.EventHandler(this.TabMojeOceny_Enter);
             // 
             // DaneGroup
@@ -640,7 +639,6 @@
             this.TabZespoly.TabIndex = 2;
             this.TabZespoly.Text = "Zespoły";
             this.TabZespoly.UseVisualStyleBackColor = true;
-            this.TabZespoly.Click += new System.EventHandler(this.TabZespoly_Click);
             this.TabZespoly.Enter += new System.EventHandler(this.TabZespoly_Enter);
             // 
             // ZespolyList
@@ -1139,7 +1137,6 @@
             this.TabPlyty.TabIndex = 3;
             this.TabPlyty.Text = "Płyty";
             this.TabPlyty.UseVisualStyleBackColor = true;
-            this.TabPlyty.Click += new System.EventHandler(this.TabPlyty_Click);
             this.TabPlyty.Enter += new System.EventHandler(this.TabPlyty_Enter);
             // 
             // PlytyList
