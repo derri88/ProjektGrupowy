@@ -371,7 +371,7 @@ namespace ProjektGrupowy
 
         private void ZEditButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Odblokuje pola powyżej, docelowo edycja i dodawanie dostępne tylko dla admina ");
+            //MessageBox.Show("Odblokuje pola powyżej, docelowo edycja i dodawanie dostępne tylko dla admina ");
             this.ZOdblokuj();
             ZEditButton.Enabled = false;
             ZNewButton.Enabled = false;
@@ -381,7 +381,7 @@ namespace ProjektGrupowy
 
         private void ZNewButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Odblokuje i wyczyści pola powyżej");
+            //MessageBox.Show("Odblokuje i wyczyści pola powyżej");
             this.ZOdblokuj();
             this.ZWyczysc();
             ZEditButton.Enabled = false;
@@ -419,6 +419,7 @@ namespace ProjektGrupowy
                                         " FROM Zespol Z INNER JOIN Gatunek ON Gatunek.Id_gatunek = Z.Id_Gatunek" + 
                                         " where ID_zespol = " + ID_Selected_Zespol;
                 Connect(TypeOfAction.Update, UpdateZespol);
+                MessageBox.Show("Zaaktualizowano zespół o nazwie: " + ZNazwaBox1.Text);
             }
 
             if(InsertOrUpdate == 1)
@@ -429,11 +430,11 @@ namespace ProjektGrupowy
                                                             "', " + ZRokStBox1.Text + 
                                                             ", " + EndRokI + ")";
                 Connect(TypeOfAction.Update, InsertZespol);
+                MessageBox.Show("Dodano nowy zespół o nazwie: " + ZNazwaBox1.Text);
             }
 
             ZSzukaj_Click(sender,e);
             this.ZZablokuj();
-            MessageBox.Show("Dodano nowy zespół o nazwie: " + ZNazwaBox1.Text);
             ZWyczysc();
             ZNewButton.Enabled = true;
             InsertOrUpdate = 0;
@@ -702,6 +703,7 @@ namespace ProjektGrupowy
             this.POdblokuj();
             PEditButton.Enabled = false;
             PNewButton.Enabled = false;
+            InsertOrUpdate = 2;
         }
 
         private void PAddButton_Click(object sender, EventArgs e)
@@ -711,14 +713,47 @@ namespace ProjektGrupowy
             this.PWyczysc();
             PEditButton.Enabled = false;
             PNewButton.Enabled = false;
+            InsertOrUpdate = 1;
         }
 
         private void PSaveButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show("gdy edycja - update; gdy nowy - insert; na koniec zablokuje pola powyżej");
+
+            if (InsertOrUpdate == 2)
+            {
+                String UpdateZespol = "UPDATE P " +
+                                        "SET " +
+                                        "P.ID_gatunek = (SELECT Gatunek.ID_gatunek FROM Gatunek WHERE Gatunek.Nazwa = '" + PGatunekBox1.Text +
+                                        "'), P.Nazwa = '" + PNazwaBox1.Text +
+                                        "', P.ID_zespol = (SELECT Zespol.ID_zespol FROM Zespol WHERE Zespol.Nazwa = '" + PZespolBox1.Text +
+                                        "'), P.Rok_wydania = " + PRokBox1.Text +
+                                        ", P.Ilosc_sciezek = " + PSciezkiBox1.Text +
+                                        " FROM Plyta P " + 
+                                        "INNER JOIN Gatunek ON Gatunek.ID_gatunek = P.ID_gatunek " + 
+                                        "INNER JOIN Zespol ON Zespol.ID_zespol = P.ID_zespol" +
+                                        " where ID_plyta = " + ID_Selected_Plyta;
+                Connect(TypeOfAction.Update, UpdateZespol);
+                MessageBox.Show("Zaaktualizowano płytę o nazwie: " + PNazwaBox1.Text);
+            }
+
+            //if (InsertOrUpdate == 1)
+            //{
+            //    String InsertZespol = "INSERT INTO Zespol   (ID_gatunek, Nazwa, Rok_start, Rok_end) " +
+            //                                      "VALUES   ((SELECT Gatunek.ID_gatunek FROM Gatunek WHERE Gatunek.Nazwa = '" + ZGatunekBox1.Text +
+            //                                                "'), '" + ZNazwaBox1.Text +
+            //                                                "', " + ZRokStBox1.Text +
+            //                                                ", " + EndRokI + ")";
+            //    Connect(TypeOfAction.Update, InsertZespol);
+            //MessageBox.Show("Dodano nową płytę o nazwie: " + PNazwaBox1.Text);
+            //}
+
+            PSzukaj_Click(sender, e);
             this.PZablokuj();
+            PWyczysc();
             PEditButton.Enabled = true;
             PNewButton.Enabled = true;
+            InsertOrUpdate = 0;
         }
 
         private void POdblokuj()
