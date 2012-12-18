@@ -19,7 +19,8 @@ namespace ProjektGrupowy
         public static int ID_Selected_Plyta = 0;
         public string NickData, ImieData, NazwiskoData, KrajData, MiastoData, MailData, StatusData;
         public DateTime Data_ur;
-        public int PlecData, ZespolID;
+        public int PlecData;
+        public int InsertOrUpdate = 0; //1 dla insert 2 dla update
         public string Istnieja = "Istnieją";
 
         public Panel()
@@ -275,9 +276,8 @@ namespace ProjektGrupowy
         {
             //MessageBox.Show("Do dodania funkcja która zapełni wynikami wyszukiwania listę po prawej, i wyświetli w grupie zespół pierwszy item z listy");
             string ZespolV, GatunekV;
-            //int ZespolID, RokStV, CountV;
-            int RokStV, CountV;
-            //int? RokEndV;
+            int ZespolID, RokStV;
+            int CountV = 0;
             string RokEndV;
             
             string Nazwa = ZNazwaBox.Text;
@@ -351,8 +351,11 @@ namespace ProjektGrupowy
                                        "where Plyta.ID_zespol = " + ZespolID +
                                        "group by Plyta.ID_zespol";
                     SqlDataReader Data1 = Connect(TypeOfAction.Select, GetCountPlyty);
-                    Data1.Read();
-                    CountV = Data1.GetInt32(0);
+                    while (Data1.Read())
+                    {
+                        if (Data1.IsDBNull(0)) { CountV = 0; }
+                        else { CountV = Data1.GetInt32(0); }
+                    }
                     Data1.Close();
 
                     ZespolyList.Items.Add(new ListViewItem(new[] { ZespolID.ToString(), ZespolV, GatunekV, RokStV.ToString(), RokEndV.ToString(), CountV.ToString() }));
@@ -361,7 +364,8 @@ namespace ProjektGrupowy
             }
             else
             {
-                MessageBox.Show("Nie zaznaczono żadnego warunku wyszukiwania lub pola pozostały puste");
+                if (InsertOrUpdate == 1 || InsertOrUpdate == 2) { }
+                else { MessageBox.Show("Nie zaznaczono żadnego warunku wyszukiwania lub pola pozostały puste"); }
             }
         }
 
@@ -371,6 +375,7 @@ namespace ProjektGrupowy
             this.ZOdblokuj();
             ZEditButton.Enabled = false;
             ZNewButton.Enabled = false;
+            InsertOrUpdate = 2;
 
         }
 
@@ -381,33 +386,57 @@ namespace ProjektGrupowy
             this.ZWyczysc();
             ZEditButton.Enabled = false;
             ZNewButton.Enabled = false;
+
+            InsertOrUpdate = 1;
             //ZespolyList.SelectedItems.Clear(); // Odkomentować, jeżeli po naciśnięciu przycisku "Dodaj" nie chcemy miec zaznaczonego żadnego rekordu, gdy anulujemy akcję ( naciśnięcie przycisku "Przerwij").
         }
 
         private void ZSaveButton_Click(object sender, EventArgs e)
         {
             //MessageBox.Show("gdy edycja - update; gdy nowy - insert; na koniec zablokuje pola powyżej");
-            string EndRok;
+            string EndRokU, EndRokI;
 
-            if (ZRokEndBox1.SelectedIndex == 0) { EndRok = ", Z.Rok_End = NULL"; }
-            else {EndRok = ", Z.Rok_End = " + ZRokEndBox1.Text;}
+            if (ZRokEndBox1.SelectedIndex == 0) 
+            { 
+                EndRokU = ", Z.Rok_End = NULL"; 
+                EndRokI = "NULL";
+            }
+            else 
+            {
+                EndRokU = ", Z.Rok_End = " + ZRokEndBox1.Text;
+                EndRokI = ZRokEndBox1.Text;
+            }
 
 
-            String UpdateZespol =   "UPDATE Z " +
-                                    "SET " +
-                                    "Z.ID_gatunek = (SELECT Gatunek.ID_gatunek FROM Gatunek WHERE Gatunek.Nazwa = '" + ZGatunekBox1.Text +
-                                    "'), Z.Nazwa = '" + ZNazwaBox1.Text +
-                                    "', Z.Rok_Start = " + ZRokStBox1.Text +
-                                    EndRok +
-                                    " FROM Zespol Z INNER JOIN Gatunek ON Gatunek.Id_gatunek = Z.Id_Gatunek" + 
-                                    " where ID_zespol = " + ID_Selected_Zespol;
+            if(InsertOrUpdate == 2)
+            {
+                String UpdateZespol =   "UPDATE Z " +
+                                        "SET " +
+                                        "Z.ID_gatunek = (SELECT Gatunek.ID_gatunek FROM Gatunek WHERE Gatunek.Nazwa = '" + ZGatunekBox1.Text +
+                                        "'), Z.Nazwa = '" + ZNazwaBox1.Text +
+                                        "', Z.Rok_Start = " + ZRokStBox1.Text +
+                                        EndRokU +
+                                        " FROM Zespol Z INNER JOIN Gatunek ON Gatunek.Id_gatunek = Z.Id_Gatunek" + 
+                                        " where ID_zespol = " + ID_Selected_Zespol;
+                Connect(TypeOfAction.Update, UpdateZespol);
+            }
 
-            Connect(TypeOfAction.Update, UpdateZespol);
+            if(InsertOrUpdate == 1)
+            {
+                String InsertZespol = "INSERT INTO Zespol   (ID_gatunek, Nazwa, Rok_start, Rok_end) " +
+                                                  "VALUES   ((SELECT Gatunek.ID_gatunek FROM Gatunek WHERE Gatunek.Nazwa = '" + ZGatunekBox1.Text +
+                                                            "'), '" + ZNazwaBox1.Text + 
+                                                            "', " + ZRokStBox1.Text + 
+                                                            ", " + EndRokI + ")";
+                Connect(TypeOfAction.Update, InsertZespol);
+            }
 
             ZSzukaj_Click(sender,e);
             this.ZZablokuj();
+            MessageBox.Show("Dodano nowy zespół o nazwie: " + ZNazwaBox1.Text);
             ZWyczysc();
             ZNewButton.Enabled = true;
+            InsertOrUpdate = 0;
         }
 
         private void ZespolyList_SelectedIndexChanged(object sender, EventArgs e)
