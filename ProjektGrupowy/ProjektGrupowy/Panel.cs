@@ -435,7 +435,6 @@ namespace ProjektGrupowy
 
             ZSzukaj_Click(sender,e);
             this.ZZablokuj();
-            ZWyczysc();
             ZNewButton.Enabled = true;
             InsertOrUpdate = 0;
         }
@@ -453,6 +452,12 @@ namespace ProjektGrupowy
                 ID_Selected_Zespol = Int32.Parse(ZespolyList.SelectedItems[0].SubItems[0].Text);
                 ZEditButton.Enabled = true;
             }
+            else 
+            {
+                ZWyczysc();
+                ZEditButton.Enabled = false;
+            }
+            ZespolyList.HideSelection = false;
         }
 
         private void ZOdblokuj()
@@ -485,12 +490,11 @@ namespace ProjektGrupowy
 
         private void ZCancel_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("wyświetl zaznaczony item z litView; na koniec zablokuje pola powyżej");
+            //MessageBox.Show("wyświetl zaznaczony item z litView; na koniec zablokuje pola powyżej");
             this.ZZablokuj();
             ZWyczysc();
             if (ZespolyList.SelectedItems.Count != 0 ) 
             {
-                ZEditButton.Enabled = true;
                 ZespolyList_SelectedIndexChanged(sender, e);
             }
             ZNewButton.Enabled = true;
@@ -699,7 +703,7 @@ namespace ProjektGrupowy
 
         private void PEditButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Odblokuje pola powyżej");
+            //MessageBox.Show("Odblokuje pola powyżej");
             this.POdblokuj();
             PEditButton.Enabled = false;
             PNewButton.Enabled = false;
@@ -714,11 +718,12 @@ namespace ProjektGrupowy
             PEditButton.Enabled = false;
             PNewButton.Enabled = false;
             InsertOrUpdate = 1;
+            //PlytyList.SelectedItems.Clear(); // Odkomentować, jeżeli po naciśnięciu przycisku "Dodaj" nie chcemy miec zaznaczonego żadnego rekordu, gdy anulujemy akcję ( naciśnięcie przycisku "Przerwij").
         }
 
         private void PSaveButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("gdy edycja - update; gdy nowy - insert; na koniec zablokuje pola powyżej");
+            //MessageBox.Show("gdy edycja - update; gdy nowy - insert; na koniec zablokuje pola powyżej");
 
             if (InsertOrUpdate == 2)
             {
@@ -750,8 +755,6 @@ namespace ProjektGrupowy
 
             PSzukaj_Click(sender, e);
             this.PZablokuj();
-            PWyczysc();
-            PEditButton.Enabled = true;
             PNewButton.Enabled = true;
             InsertOrUpdate = 0;
         }
@@ -780,18 +783,22 @@ namespace ProjektGrupowy
 
         private void PWyczysc()
         {
-            PNazwaBox1.Text = "";
-            PGatunekBox1.Text = "";
-            PZespolBox1.Text = "";
-            PRokBox1.Text = "";
-            PSciezkiBox1.Text = "";
+            PNazwaBox1.Text = null;
+            PGatunekBox1.Text = null;
+            PZespolBox1.Text = null;
+            PRokBox1.Text = null;
+            PSciezkiBox1.Text = null;
         }
 
         private void PCancel_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("wyświetl zaznaczony item z litView; na koniec zablokuje pola powyżej");
+            //MessageBox.Show("wyświetl zaznaczony item z litView; na koniec zablokuje pola powyżej");
             this.PZablokuj();
-            PEditButton.Enabled = true;
+            PWyczysc();
+            if (PlytyList.SelectedItems.Count != 0)
+            {
+                PlytyList_SelectedIndexChanged(sender, e);
+            }
             PNewButton.Enabled = true;
         }
 
@@ -821,6 +828,7 @@ namespace ProjektGrupowy
                 PRokBox1.Text = PlytyList.SelectedItems[0].SubItems[4].Text;
                 PSciezkiBox1.Text = PlytyList.SelectedItems[0].SubItems[5].Text;
                 ID_Selected_Plyta = Int32.Parse(PlytyList.SelectedItems[0].SubItems[0].Text);
+                PEditButton.Enabled = true;
 
                 string GetOcena = "SELECT Ocena FROM Ocena WHERE ID_Plyta = " + ID_Selected_Plyta + "and ID_user = " + Program.ID_zalogowanego;
                 SqlDataReader Data = Connect(TypeOfAction.Select, GetOcena);
@@ -835,6 +843,12 @@ namespace ProjektGrupowy
                 }
                 Data.Close();
             }
+            else 
+            { 
+                PWyczysc();
+                PEditButton.Enabled = false;
+            }
+            PlytyList.HideSelection = false;
         }
 
         private void TabPlyty_Enter(object sender, EventArgs e)
@@ -845,6 +859,7 @@ namespace ProjektGrupowy
             DropDownItems_Rok(PRokBox1);
             DropDownItems_Sciezki(PSciezkiBox1);
             DropDownItems_Zespol(PZespolBox1);
+            PEditButton.Enabled = false;
         }
 
 /*############################ KONIEC  3 ZAKLADKA (Plyty) #############################################################################################*/
