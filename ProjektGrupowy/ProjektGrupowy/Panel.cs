@@ -351,10 +351,15 @@ namespace ProjektGrupowy
                                        "where Plyta.ID_zespol = " + ZespolID +
                                        "group by Plyta.ID_zespol";
                     SqlDataReader Data1 = Connect(TypeOfAction.Select, GetCountPlyty);
-                    while (Data1.Read())
+
+                    Data1.Read();
+                    if (Data1.HasRows)
                     {
-                        if (Data1.IsDBNull(0)) { CountV = 0; }
-                        else { CountV = Data1.GetInt32(0); }
+                        CountV = Data1.GetInt32(0);
+                    }
+                    else
+                    {
+                        CountV = 0;
                     }
                     Data1.Close();
 
@@ -651,15 +656,16 @@ namespace ProjektGrupowy
                                        "where Ocena.ID_plyta = " + PlytaID + " "+
                                        "group by Ocena.ID_plyta";                   // poprawic zapytanie zeby AVG nie zwracało int
                     SqlDataReader Data1 = Connect(TypeOfAction.Select, GetAvgPlyta);
-                    Data1.Read();
-                    if (Data1.HasRows)
-                    {
-                        AvgV = (double)Data1.GetDecimal(0);
-                    }
-                    else
-                    {
-                        AvgV = null;
-                    }
+                        Data1.Read();
+                        if (Data1.HasRows)
+                        {
+                            AvgV = (double)Data1.GetDecimal(0);
+                        }
+                        else
+                        {
+                            AvgV = null;
+                        }
+
                     Data1.Close();
 
                     PlytyList.Items.Add(new ListViewItem(new[] { PlytaID.ToString(), NazwaV, GatunekV, ZespolV, RokV.ToString(), SciezkiV.ToString(), AvgV.ToString() }));
