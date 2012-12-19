@@ -579,7 +579,7 @@ namespace ProjektGrupowy
         {
             string NazwaV, ZespolV, GatunekV;
             int PlytaID, RokV, SciezkiV;
-            double AvgV;
+            double AvgV = 0.0;
             string Nazwa = PNazwaBox.Text;
             string Gatunek = PGatunekBox.Text;
             string Zespol = PZespolBox.Text;
@@ -651,14 +651,17 @@ namespace ProjektGrupowy
                                        "where Ocena.ID_plyta = " + PlytaID + " "+
                                        "group by Ocena.ID_plyta";                   // poprawic zapytanie zeby AVG nie zwracało int
                     SqlDataReader Data1 = Connect(TypeOfAction.Select, GetAvgPlyta);
-                    Data1.Read();
-                    if(Data1.IsDBNull(0))
+                    while (Data1.Read())
                     {
-                        AvgV = 0.0;
-                    }
-                    else
-                    {
-                        AvgV = (double) Data1.GetDecimal(0);
+
+                        if (Data1.IsDBNull(0))
+                        {
+                            AvgV = 0.0;
+                        }
+                        else
+                        {
+                            AvgV = (double)Data1.GetDecimal(0);
+                        }
                     }
 
                     Data1.Close();
@@ -727,7 +730,7 @@ namespace ProjektGrupowy
 
             if (InsertOrUpdate == 2)
             {
-                String UpdateZespol = "UPDATE P " +
+                String UpdatePlyta = "UPDATE P " +
                                         "SET " +
                                         "P.ID_gatunek = (SELECT Gatunek.ID_gatunek FROM Gatunek WHERE Gatunek.Nazwa = '" + PGatunekBox1.Text +
                                         "'), P.Nazwa = '" + PNazwaBox1.Text +
@@ -738,20 +741,21 @@ namespace ProjektGrupowy
                                         "INNER JOIN Gatunek ON Gatunek.ID_gatunek = P.ID_gatunek " + 
                                         "INNER JOIN Zespol ON Zespol.ID_zespol = P.ID_zespol" +
                                         " where ID_plyta = " + ID_Selected_Plyta;
-                Connect(TypeOfAction.Update, UpdateZespol);
+                Connect(TypeOfAction.Update, UpdatePlyta);
                 MessageBox.Show("Zaaktualizowano płytę o nazwie: " + PNazwaBox1.Text);
             }
 
-            //if (InsertOrUpdate == 1)
-            //{
-            //    String InsertZespol = "INSERT INTO Zespol   (ID_gatunek, Nazwa, Rok_start, Rok_end) " +
-            //                                      "VALUES   ((SELECT Gatunek.ID_gatunek FROM Gatunek WHERE Gatunek.Nazwa = '" + ZGatunekBox1.Text +
-            //                                                "'), '" + ZNazwaBox1.Text +
-            //                                                "', " + ZRokStBox1.Text +
-            //                                                ", " + EndRokI + ")";
-            //    Connect(TypeOfAction.Update, InsertZespol);
-            //MessageBox.Show("Dodano nową płytę o nazwie: " + PNazwaBox1.Text);
-            //}
+            if (InsertOrUpdate == 1)
+            {
+                String InsertPlyta = "INSERT INTO Plyta   (ID_gatunek, ID_zespol, Nazwa, Rok_wydania, Ilosc_sciezek) " +
+                                                  "VALUES   ((SELECT Gatunek.ID_gatunek FROM Gatunek WHERE Gatunek.Nazwa = '" + PGatunekBox1.Text +
+                                                            "'), (SELECT Zespol.ID_zespol FROM Zespol WHERE Zespol.Nazwa = '" + PZespolBox1.Text + 
+                                                            "'), '" + PNazwaBox1.Text +
+                                                            "', " + PRokBox1.Text +
+                                                            ", " + PSciezkiBox1.Text + ")";
+                Connect(TypeOfAction.Update, InsertPlyta);
+                MessageBox.Show("Dodano nową płytę o nazwie: " + ZNazwaBox1.Text + " do zespołu: " + PNazwaBox1.Text);
+            }
 
             PSzukaj_Click(sender, e);
             this.PZablokuj();
@@ -911,7 +915,7 @@ namespace ProjektGrupowy
 
         private void DropDownItems_Zespol(ComboBox CB) 
         {
-            string GetZespol = "SELECT Nazwa FROM Zespol ORDER BY Nazwa desc";
+            string GetZespol = "SELECT Nazwa FROM Zespol ORDER BY Nazwa asc";
             SqlDataReader Data = Connect(TypeOfAction.Select, GetZespol);
             while (Data.Read())
             {
