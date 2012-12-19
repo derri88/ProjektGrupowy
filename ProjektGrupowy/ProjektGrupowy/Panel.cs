@@ -579,7 +579,7 @@ namespace ProjektGrupowy
         {
             string NazwaV, ZespolV, GatunekV;
             int PlytaID, RokV, SciezkiV;
-            double AvgV = 0.0;
+            double ?AvgV = null;
             string Nazwa = PNazwaBox.Text;
             string Gatunek = PGatunekBox.Text;
             string Zespol = PZespolBox.Text;
@@ -651,19 +651,15 @@ namespace ProjektGrupowy
                                        "where Ocena.ID_plyta = " + PlytaID + " "+
                                        "group by Ocena.ID_plyta";                   // poprawic zapytanie zeby AVG nie zwracało int
                     SqlDataReader Data1 = Connect(TypeOfAction.Select, GetAvgPlyta);
-                    while (Data1.Read())
+                    Data1.Read();
+                    if (Data1.HasRows)
                     {
-
-                        if (Data1.IsDBNull(0))
-                        {
-                            AvgV = 0.0;
-                        }
-                        else
-                        {
-                            AvgV = (double)Data1.GetDecimal(0);
-                        }
+                        AvgV = (double)Data1.GetDecimal(0);
                     }
-
+                    else
+                    {
+                        AvgV = null;
+                    }
                     Data1.Close();
 
                     PlytyList.Items.Add(new ListViewItem(new[] { PlytaID.ToString(), NazwaV, GatunekV, ZespolV, RokV.ToString(), SciezkiV.ToString(), AvgV.ToString() }));
