@@ -759,6 +759,41 @@ namespace ProjektGrupowy
             InsertOrUpdate = 0;
         }
 
+        private void PlytyList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (PlytyList.SelectedItems.Count != 0)
+            {
+                POcenaDodaj.Enabled = true;
+                POcenaBox.Enabled = true;
+                PNazwaBox1.Text = PlytyList.SelectedItems[0].SubItems[1].Text;
+                PGatunekBox1.Text = PlytyList.SelectedItems[0].SubItems[2].Text;
+                PZespolBox1.Text = PlytyList.SelectedItems[0].SubItems[3].Text;
+                PRokBox1.Text = PlytyList.SelectedItems[0].SubItems[4].Text;
+                PSciezkiBox1.Text = PlytyList.SelectedItems[0].SubItems[5].Text;
+                ID_Selected_Plyta = Int32.Parse(PlytyList.SelectedItems[0].SubItems[0].Text);
+                PEditButton.Enabled = true;
+
+                string GetOcena = "SELECT Ocena FROM Ocena WHERE ID_Plyta = " + ID_Selected_Plyta + "and ID_user = " + Program.ID_zalogowanego;
+                SqlDataReader Data = Connect(TypeOfAction.Select, GetOcena);
+                Data.Read();
+                if (!Data.HasRows)
+                {
+                    POcenaBox.Text = "0";
+                }
+                else
+                {
+                    POcenaBox.Text = Data.GetInt32(0).ToString();
+                }
+                Data.Close();
+            }
+            else
+            {
+                PWyczysc();
+                PEditButton.Enabled = false;
+            }
+            PlytyList.HideSelection = false;
+        }
+
         private void POdblokuj()
         {
             PNazwaBox1.Enabled = true;
@@ -800,6 +835,8 @@ namespace ProjektGrupowy
                 PlytyList_SelectedIndexChanged(sender, e);
             }
             PNewButton.Enabled = true;
+            POcenaBox.Enabled = false;
+            POcenaDodaj.Enabled = false;
         }
 
         private bool CzyPlytaOceniona()
@@ -814,41 +851,6 @@ namespace ProjektGrupowy
             }
             Data.Close();
             return b;
-        }
-
-        private void PlytyList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (PlytyList.SelectedItems.Count != 0)
-            {
-                POcenaDodaj.Enabled = true;
-                POcenaBox.Enabled = true;
-                PNazwaBox1.Text = PlytyList.SelectedItems[0].SubItems[1].Text;
-                PGatunekBox1.Text = PlytyList.SelectedItems[0].SubItems[2].Text;
-                PZespolBox1.Text = PlytyList.SelectedItems[0].SubItems[3].Text;
-                PRokBox1.Text = PlytyList.SelectedItems[0].SubItems[4].Text;
-                PSciezkiBox1.Text = PlytyList.SelectedItems[0].SubItems[5].Text;
-                ID_Selected_Plyta = Int32.Parse(PlytyList.SelectedItems[0].SubItems[0].Text);
-                PEditButton.Enabled = true;
-
-                string GetOcena = "SELECT Ocena FROM Ocena WHERE ID_Plyta = " + ID_Selected_Plyta + "and ID_user = " + Program.ID_zalogowanego;
-                SqlDataReader Data = Connect(TypeOfAction.Select, GetOcena);
-                Data.Read();
-                if (!Data.HasRows)
-                {
-                    POcenaBox.Text = "0";
-                }
-                else
-                {
-                    POcenaBox.Text = Data.GetInt32(0).ToString();
-                }
-                Data.Close();
-            }
-            else 
-            { 
-                PWyczysc();
-                PEditButton.Enabled = false;
-            }
-            PlytyList.HideSelection = false;
         }
 
         private void TabPlyty_Enter(object sender, EventArgs e)
