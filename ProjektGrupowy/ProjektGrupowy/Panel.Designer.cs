@@ -171,6 +171,7 @@
             this.PNazwaCheck = new System.Windows.Forms.CheckBox();
             this.PNazwaBox = new System.Windows.Forms.TextBox();
             this.PNazwa = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.PanelTabControl.SuspendLayout();
             this.TabMojeOceny.SuspendLayout();
             this.DaneGroup.SuspendLayout();
@@ -188,6 +189,7 @@
             this.PEditGroup.SuspendLayout();
             this.PSzukajGroup.SuspendLayout();
             this.PRokGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // PanelTabControl
@@ -1630,11 +1632,24 @@
             this.PNazwa.Text = "Nazwa";
             this.PNazwa.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Enabled = false;
+            this.pictureBox1.Image = global::ProjektGrupowy.Properties.Resources.bert;
+            this.pictureBox1.Location = new System.Drawing.Point(460, 5);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(128, 15);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Visible = false;
+            // 
             // Panel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1062, 345);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.PanelTabControl);
             this.Name = "Panel";
             this.Text = "Panel";
@@ -1665,7 +1680,9 @@
             this.PSzukajGroup.PerformLayout();
             this.PRokGroup.ResumeLayout(false);
             this.PRokGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -1812,6 +1829,7 @@
         private System.Windows.Forms.ColumnHeader IDV;
         private System.Windows.Forms.ColumnHeader VID;
         private System.Windows.Forms.ColumnHeader PVID;
+        private System.Windows.Forms.PictureBox pictureBox1;
 
         //private void InitializeComponent(bool parametr)
         //{

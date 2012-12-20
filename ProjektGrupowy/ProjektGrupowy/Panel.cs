@@ -274,7 +274,10 @@ namespace ProjektGrupowy
         // 2 ZAKLADKA (Zespoly)
         private void ZSzukaj_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("Do dodania funkcja która zapełni wynikami wyszukiwania listę po prawej, i wyświetli w grupie zespół pierwszy item z listy");
+            //PanelTabControl.Enabled = false;
+            pictureBox1.Enabled = true;
+            pictureBox1.Visible = true;
+
             string ZespolV, GatunekV;
             int ZespolID, RokStV;
             int CountV = 0;
@@ -362,8 +365,8 @@ namespace ProjektGrupowy
                         CountV = 0;
                     }
                     Data1.Close();
-
                     ZespolyList.Items.Add(new ListViewItem(new[] { ZespolID.ToString(), ZespolV, GatunekV, RokStV.ToString(), RokEndV.ToString(), CountV.ToString() }));
+                    Application.DoEvents();
                 }
                 Data.Close();
             }
@@ -372,6 +375,10 @@ namespace ProjektGrupowy
                 if (InsertOrUpdate == 1 || InsertOrUpdate == 2) { }
                 else { MessageBox.Show("Nie zaznaczono żadnego warunku wyszukiwania lub pola pozostały puste"); }
             }
+
+            pictureBox1.Visible = false;
+            pictureBox1.Enabled = false;
+            PanelTabControl.Enabled = true;
         }
 
         private void ZEditButton_Click(object sender, EventArgs e)
@@ -582,6 +589,10 @@ namespace ProjektGrupowy
         // 3 ZAKLADKA (Plyty)
         private void PSzukaj_Click(object sender, EventArgs e)
         {
+            PanelTabControl.Enabled = false;
+            pictureBox1.Enabled = true;
+            pictureBox1.Visible = true;
+
             string NazwaV, ZespolV, GatunekV;
             int PlytaID, RokV, SciezkiV;
             double ?AvgV = null;
@@ -669,13 +680,18 @@ namespace ProjektGrupowy
                     Data1.Close();
 
                     PlytyList.Items.Add(new ListViewItem(new[] { PlytaID.ToString(), NazwaV, GatunekV, ZespolV, RokV.ToString(), SciezkiV.ToString(), AvgV.ToString() }));
+                    Application.DoEvents();
                 }
                 Data.Close();
             }
             else
             {
                 MessageBox.Show("Nie zaznaczono żadnego warunku wyszukiwania lub pola pozostały puste");
-            }         
+            }
+
+            pictureBox1.Visible = false;
+            pictureBox1.Enabled = false;
+            PanelTabControl.Enabled = true;
         }
 
         private void POcenaDodaj_Click(object sender, EventArgs e)
