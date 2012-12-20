@@ -38,9 +38,12 @@ namespace ProjektGrupowy
 
             Panel Panel = new Panel();
             SqlDataReader DataUser = Panel.Connect(Panel.TypeOfAction.Select, CheckUser);
+            Application.DoEvents();
             SqlDataReader DataIleRek = Panel.Connect(Panel.TypeOfAction.Select, IleRekordow);
+            Application.DoEvents();
 
             DataIleRek.Read();
+            Application.DoEvents();
             IleRek = DataIleRek.GetInt32(0);
             DataIleRek.Close();
             if (IleRek == 1 && DataUser.Read())
@@ -88,9 +91,25 @@ namespace ProjektGrupowy
         */
         private void LoginOK_Click(object sender, EventArgs e)
         {
+            pictureBox1.Enabled = true;
+            pictureBox1.Visible = true;
+            Application.DoEvents();
+            LoginOK.Enabled = false;
+            LoginAnuluj.Enabled = false;
+            LoginRemind.Enabled = false;
+            LoginBox.Enabled = false;
+            HasloBox.Enabled = false;
+
             Program.ID_zalogowanego = DaneLogowania();
             if (Program.ID_zalogowanego != 0)
             {
+                pictureBox1.Visible = false;
+                pictureBox1.Enabled = false;
+                LoginOK.Enabled = true;
+                LoginAnuluj.Enabled = true;
+                LoginRemind.Enabled = true;
+                pictureBox1.Visible = false;
+                pictureBox1.Enabled = false;
                 Panel Panel = new Panel();
                 Panel.Show();
                 Panel.Dane_uzytkownika_Show();
@@ -100,6 +119,13 @@ namespace ProjektGrupowy
             else
             {
                 MessageBox.Show("Błędny Login i/lub Hasło");
+                pictureBox1.Visible = false;
+                pictureBox1.Enabled = false;
+                LoginOK.Enabled = true;
+                LoginAnuluj.Enabled = true;
+                LoginRemind.Enabled = true;
+                LoginBox.Enabled = true;
+                HasloBox.Enabled = true;
             }
         }
 
