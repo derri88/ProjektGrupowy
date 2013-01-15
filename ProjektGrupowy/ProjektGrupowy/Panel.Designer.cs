@@ -1651,6 +1651,8 @@
             this.ClientSize = new System.Drawing.Size(1062, 345);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.PanelTabControl);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Panel";
             this.Text = "Panel";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Panel_FormClosed);
@@ -1745,7 +1747,7 @@
         private System.Windows.Forms.ColumnHeader VRSt;
         private System.Windows.Forms.ColumnHeader VREnd;
         private System.Windows.Forms.ColumnHeader VCount;
-        private System.Windows.Forms.GroupBox ZEditGroup;
+        public System.Windows.Forms.GroupBox ZEditGroup;
         private System.Windows.Forms.Button ZSaveButton;
         private System.Windows.Forms.Button ZNewButton;
         private System.Windows.Forms.Button ZEditButton;
@@ -1764,7 +1766,7 @@
         private System.Windows.Forms.ColumnHeader PVRok;
         private System.Windows.Forms.ColumnHeader PVSciezki;
         private System.Windows.Forms.GroupBox PlytaGroup;
-        private System.Windows.Forms.GroupBox PEditGroup;
+        public System.Windows.Forms.GroupBox PEditGroup;
         private System.Windows.Forms.Button PSaveButton;
         private System.Windows.Forms.Button PNewButton;
         private System.Windows.Forms.Button PEditButton;

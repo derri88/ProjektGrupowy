@@ -32,6 +32,8 @@ namespace ProjektGrupowy
             Panel.MOcenyGroup.Enabled = false;
             Panel.DaneGroup.Enabled = false;
             Panel.POcenaGroup.Enabled = false;
+            Panel.ZEditGroup.Enabled = false;
+            Panel.PEditGroup.Enabled = false;
             Panel.PanelTabControl.SelectedTab = Panel.TabZespoly;
             Panel.Show();
         }

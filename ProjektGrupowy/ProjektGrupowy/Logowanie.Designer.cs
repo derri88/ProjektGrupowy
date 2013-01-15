@@ -119,6 +119,8 @@
             this.Controls.Add(this.Haslo);
             this.Controls.Add(this.LoginBox);
             this.Controls.Add(this.Login);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Logowanie";
             this.Text = "Logowanie";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Logowanie_FormClosed);

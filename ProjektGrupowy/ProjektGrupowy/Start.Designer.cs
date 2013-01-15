@@ -59,9 +59,10 @@
             this.ClientSize = new System.Drawing.Size(316, 91);
             this.Controls.Add(this.Gosc);
             this.Controls.Add(this.Logowanie);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Start";
             this.Text = "Start";
-            
             this.ResumeLayout(false);
 
         }
