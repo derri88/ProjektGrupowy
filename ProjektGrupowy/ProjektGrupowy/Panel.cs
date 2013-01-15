@@ -369,12 +369,15 @@ namespace ProjektGrupowy
                     Application.DoEvents();
                 }
                 Data.Close();
+                if (ZespolyList.Items.Count == 0)
+                    MessageBox.Show("Nie znaleziono zespołu o podanych kryteriach");
             }
             else
             {
                 if (InsertOrUpdate == 1 || InsertOrUpdate == 2) { }
                 else { MessageBox.Show("Nie zaznaczono żadnego warunku wyszukiwania lub pola pozostały puste"); }
             }
+
 
             pictureBox1.Visible = false;
             pictureBox1.Enabled = false;
@@ -683,6 +686,8 @@ namespace ProjektGrupowy
                     Application.DoEvents();
                 }
                 Data.Close();
+                if (PlytyList.Items.Count == 0)
+                    MessageBox.Show("Nie znaleziono płyty o podanych kryteriach");
             }
             else
             {
