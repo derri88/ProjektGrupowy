@@ -33,7 +33,6 @@
             this.Haslo = new System.Windows.Forms.Label();
             this.LoginOK = new System.Windows.Forms.Button();
             this.LoginAnuluj = new System.Windows.Forms.Button();
-            this.LoginRemind = new System.Windows.Forms.Button();
             this.HasloBox = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -86,16 +85,6 @@
             this.LoginAnuluj.UseVisualStyleBackColor = true;
             this.LoginAnuluj.Click += new System.EventHandler(this.LoginAnuluj_Click);
             // 
-            // LoginRemind
-            // 
-            this.LoginRemind.Location = new System.Drawing.Point(12, 137);
-            this.LoginRemind.Name = "LoginRemind";
-            this.LoginRemind.Size = new System.Drawing.Size(194, 32);
-            this.LoginRemind.TabIndex = 6;
-            this.LoginRemind.Text = "Przypomnij hasło";
-            this.LoginRemind.UseVisualStyleBackColor = true;
-            this.LoginRemind.Click += new System.EventHandler(this.LoginRemind_Click);
-            // 
             // HasloBox
             // 
             this.HasloBox.Location = new System.Drawing.Point(12, 77);
@@ -122,10 +111,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(221, 171);
+            this.ClientSize = new System.Drawing.Size(221, 136);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.HasloBox);
-            this.Controls.Add(this.LoginRemind);
             this.Controls.Add(this.LoginAnuluj);
             this.Controls.Add(this.LoginOK);
             this.Controls.Add(this.Haslo);
@@ -147,7 +135,6 @@
         private System.Windows.Forms.Label Haslo;
         private System.Windows.Forms.Button LoginOK;
         private System.Windows.Forms.Button LoginAnuluj;
-        private System.Windows.Forms.Button LoginRemind;
         private System.Windows.Forms.TextBox HasloBox;
         private System.Windows.Forms.PictureBox pictureBox1;
     }

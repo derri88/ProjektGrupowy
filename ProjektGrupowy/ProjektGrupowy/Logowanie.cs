@@ -96,7 +96,6 @@ namespace ProjektGrupowy
             Application.DoEvents();
             LoginOK.Enabled = false;
             LoginAnuluj.Enabled = false;
-            LoginRemind.Enabled = false;
             LoginBox.Enabled = false;
             HasloBox.Enabled = false;
 
@@ -107,7 +106,6 @@ namespace ProjektGrupowy
                 pictureBox1.Enabled = false;
                 LoginOK.Enabled = true;
                 LoginAnuluj.Enabled = true;
-                LoginRemind.Enabled = true;
                 pictureBox1.Visible = false;
                 pictureBox1.Enabled = false;
                 Panel Panel = new Panel();
@@ -119,11 +117,11 @@ namespace ProjektGrupowy
             else
             {
                 MessageBox.Show("Błędny Login i/lub Hasło");
+                HasloBox.Clear();
                 pictureBox1.Visible = false;
                 pictureBox1.Enabled = false;
                 LoginOK.Enabled = true;
                 LoginAnuluj.Enabled = true;
-                LoginRemind.Enabled = true;
                 LoginBox.Enabled = true;
                 HasloBox.Enabled = true;
             }

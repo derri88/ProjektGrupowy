@@ -554,7 +554,8 @@ namespace ProjektGrupowy
 
                 }
                 Data.Close();
-
+                if (PlytyList.Items.Count == 0)
+                    MessageBox.Show("Nie znaleziono płyt dla wybranego zespołu");
             }
             else
             {
