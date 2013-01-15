@@ -587,7 +587,7 @@ namespace ProjektGrupowy
 
 /*############################ 3 ZAKLADKA (Plyty) #####################################################################################################*/
         // 3 ZAKLADKA (Plyty)
-        private void PSzukaj_Click(object sender, EventArgs e)
+        private void PSzukaj_Click( object sender, EventArgs e)
         {
             PanelTabControl.Enabled = false;
             pictureBox1.Enabled = true;
@@ -665,7 +665,7 @@ namespace ProjektGrupowy
 
                     string GetAvgPlyta = "select AVG(cast((Ocena)as decimal(2,0))) from Ocena " +
                                        "where Ocena.ID_plyta = " + PlytaID + " "+
-                                       "group by Ocena.ID_plyta";                   // poprawic zapytanie zeby AVG nie zwracało int
+                                       "group by Ocena.ID_plyta";                   
                     SqlDataReader Data1 = Connect(TypeOfAction.Select, GetAvgPlyta);
                         Data1.Read();
                         if (Data1.HasRows)
@@ -686,7 +686,8 @@ namespace ProjektGrupowy
             }
             else
             {
-                MessageBox.Show("Nie zaznaczono żadnego warunku wyszukiwania lub pola pozostały puste");
+                if (InsertOrUpdate !=1) 
+                    MessageBox.Show("Nie zaznaczono żadnego warunku wyszukiwania lub pola pozostały puste");
             }
 
             pictureBox1.Visible = false;
@@ -733,7 +734,6 @@ namespace ProjektGrupowy
 
         private void PAddButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Odblokuje i wyczyści pola powyżej");
             this.POdblokuj();
             this.PWyczysc();
             PEditButton.Enabled = false;
@@ -761,6 +761,7 @@ namespace ProjektGrupowy
                                         " where ID_plyta = " + ID_Selected_Plyta;
                 Connect(TypeOfAction.Update, UpdatePlyta);
                 MessageBox.Show("Zaaktualizowano płytę o nazwie: " + PNazwaBox1.Text);
+                PSzukaj_Click(sender, e);
             }
 
             if (InsertOrUpdate == 1)
@@ -772,10 +773,9 @@ namespace ProjektGrupowy
                                                             "', " + PRokBox1.Text +
                                                             ", " + PSciezkiBox1.Text + ")";
                 Connect(TypeOfAction.Update, InsertPlyta);
-                MessageBox.Show("Dodano nową płytę o nazwie: " + ZNazwaBox1.Text + " do zespołu: " + PNazwaBox1.Text);
+                MessageBox.Show("Dodano nową płytę o nazwie: " + PNazwaBox1.Text + " do zespołu: " + PZespolBox1.Text);
             }
 
-            PSzukaj_Click(sender, e);
             this.PZablokuj();
             PNewButton.Enabled = true;
             InsertOrUpdate = 0;
