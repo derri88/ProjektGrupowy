@@ -28,7 +28,8 @@ namespace ProjektGrupowy
         {
             Panel Panel = new Panel();
             Program.Start1.Hide();
-            
+
+            Panel.MOcenyList.Clear();
             Panel.MOcenyGroup.Enabled = false;
             Panel.DaneGroup.Enabled = false;
             Panel.POcenaGroup.Enabled = false;
