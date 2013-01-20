@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Collections;
 
 namespace ProjektGrupowy
 {
@@ -22,6 +23,8 @@ namespace ProjektGrupowy
         public int PlecData;
         public int InsertOrUpdate = 0; //1 dla insert 2 dla update
         public string Istnieja = "Istnieją";
+        public static ArrayList RSt = new ArrayList();
+        public static ArrayList Rend = new ArrayList();
 
         public Panel()
         {
@@ -390,6 +393,7 @@ namespace ProjektGrupowy
             this.ZOdblokuj();
             ZEditButton.Enabled = false;
             ZNewButton.Enabled = false;
+            ZSzukaj.Enabled = false;
             InsertOrUpdate = 2;
 
         }
@@ -401,6 +405,7 @@ namespace ProjektGrupowy
             this.ZWyczysc();
             ZEditButton.Enabled = false;
             ZNewButton.Enabled = false;
+            ZSzukaj.Enabled = false;
 
             InsertOrUpdate = 1;
             //ZespolyList.SelectedItems.Clear(); // Odkomentować, jeżeli po naciśnięciu przycisku "Dodaj" nie chcemy miec zaznaczonego żadnego rekordu, gdy anulujemy akcję ( naciśnięcie przycisku "Przerwij").
@@ -410,6 +415,7 @@ namespace ProjektGrupowy
         {
             //MessageBox.Show("gdy edycja - update; gdy nowy - insert; na koniec zablokuje pola powyżej");
             string EndRokU, EndRokI;
+            bool b = true;
 
             if (ZRokEndBox1.SelectedIndex == 0) 
             { 
@@ -422,8 +428,21 @@ namespace ProjektGrupowy
                 EndRokI = ZRokEndBox1.Text;
             }
 
+            if (ZNazwaBox1.Text == "")
+                b = false;
+            if (ZGatunekBox1.Text == "")
+                b = false;
+            if (ZRokStBox1.Text == "")
+                b = false;
+            if (ZRokEndBox1.Text == "")
+                b = false;
+            if (ZRokEndBox1.SelectedIndex != 0 && ZRokEndBox1.SelectedIndex <= ZRokStBox1.SelectedIndex)
+                b = false;
 
-            if(InsertOrUpdate == 2)
+            if (!b)
+                MessageBox.Show("Nie można zaktualizować danych, sprawdź czy wszystkie pola zostały wypełnione poprawnie");
+
+            if(InsertOrUpdate == 2 && b)
             {
                 String UpdateZespol =   "UPDATE Z " +
                                         "SET " +
@@ -437,7 +456,7 @@ namespace ProjektGrupowy
                 MessageBox.Show("Zaaktualizowano zespół o nazwie: " + ZNazwaBox1.Text);
             }
 
-            if(InsertOrUpdate == 1)
+            if(InsertOrUpdate == 1 && b)
             {
                 String InsertZespol = "INSERT INTO Zespol   (ID_gatunek, Nazwa, Rok_start, Rok_end) " +
                                                   "VALUES   ((SELECT Gatunek.ID_gatunek FROM Gatunek WHERE Gatunek.Nazwa = '" + ZGatunekBox1.Text +
@@ -447,11 +466,14 @@ namespace ProjektGrupowy
                 Connect(TypeOfAction.Update, InsertZespol);
                 MessageBox.Show("Dodano nowy zespół o nazwie: " + ZNazwaBox1.Text);
             }
-
-            ZSzukaj_Click(sender,e);
-            this.ZZablokuj();
-            ZNewButton.Enabled = true;
-            InsertOrUpdate = 0;
+            if (b)
+            {
+                ZSzukaj_Click(sender, e);
+                this.ZZablokuj();
+                ZNewButton.Enabled = true;
+                ZSzukaj.Enabled = true;
+                InsertOrUpdate = 0;
+            }
         }
 
         private void ZespolyList_SelectedIndexChanged(object sender, EventArgs e)
@@ -513,6 +535,7 @@ namespace ProjektGrupowy
                 ZespolyList_SelectedIndexChanged(sender, e);
             }
             ZNewButton.Enabled = true;
+            ZSzukaj.Enabled = true;
         }
 
         private void ZPlytyButton_Click(object sender, EventArgs e)
@@ -735,6 +758,8 @@ namespace ProjektGrupowy
             this.POdblokuj();
             PEditButton.Enabled = false;
             PNewButton.Enabled = false;
+            PSzukaj.Enabled = false;
+            POcenaGroup.Enabled = false;
             InsertOrUpdate = 2;
         }
 
@@ -744,6 +769,8 @@ namespace ProjektGrupowy
             this.PWyczysc();
             PEditButton.Enabled = false;
             PNewButton.Enabled = false;
+            PSzukaj.Enabled = false;
+            POcenaGroup.Enabled = false;
             InsertOrUpdate = 1;
             //PlytyList.SelectedItems.Clear(); // Odkomentować, jeżeli po naciśnięciu przycisku "Dodaj" nie chcemy miec zaznaczonego żadnego rekordu, gdy anulujemy akcję ( naciśnięcie przycisku "Przerwij").
         }
@@ -751,8 +778,22 @@ namespace ProjektGrupowy
         private void PSaveButton_Click(object sender, EventArgs e)
         {
             //MessageBox.Show("gdy edycja - update; gdy nowy - insert; na koniec zablokuje pola powyżej");
+            bool b = true;
 
-            if (InsertOrUpdate == 2)
+            if (PNazwaBox1.Text == "")
+                b = false;
+            if (PGatunekBox1.Text == "")
+                b = false;
+            if (PZespolBox1.Text == "")
+                b = false;
+            if (PRokBox1.Text == "")
+                b = false;
+            if (PSciezkiBox1.Text == "")
+                b = false;
+            if (!b)
+                MessageBox.Show("Nie można zaktualizować danych, sprawdź czy wszystkie pola zostały wypełnione poprawnie");
+
+            if (InsertOrUpdate == 2 && b)
             {
                 String UpdatePlyta = "UPDATE P " +
                                         "SET " +
@@ -770,7 +811,7 @@ namespace ProjektGrupowy
                 PSzukaj_Click(sender, e);
             }
 
-            if (InsertOrUpdate == 1)
+            if (InsertOrUpdate == 1 && b)
             {
                 String InsertPlyta = "INSERT INTO Plyta   (ID_gatunek, ID_zespol, Nazwa, Rok_wydania, Ilosc_sciezek) " +
                                                   "VALUES   ((SELECT Gatunek.ID_gatunek FROM Gatunek WHERE Gatunek.Nazwa = '" + PGatunekBox1.Text +
@@ -781,10 +822,14 @@ namespace ProjektGrupowy
                 Connect(TypeOfAction.Update, InsertPlyta);
                 MessageBox.Show("Dodano nową płytę o nazwie: " + PNazwaBox1.Text + " do zespołu: " + PZespolBox1.Text);
             }
-
-            this.PZablokuj();
-            PNewButton.Enabled = true;
-            InsertOrUpdate = 0;
+            if (b)
+            {
+                this.PZablokuj();
+                PNewButton.Enabled = true;
+                PSzukaj.Enabled = true;
+                POcenaGroup.Enabled = true;
+                InsertOrUpdate = 0;
+            }
         }
 
         private void PlytyList_SelectedIndexChanged(object sender, EventArgs e)
@@ -863,8 +908,8 @@ namespace ProjektGrupowy
                 PlytyList_SelectedIndexChanged(sender, e);
             }
             PNewButton.Enabled = true;
-            POcenaBox.Enabled = false;
-            POcenaDodaj.Enabled = false;
+            POcenaGroup.Enabled = true;
+            PSzukaj.Enabled = true;
         }
 
         private bool CzyPlytaOceniona()
@@ -939,11 +984,21 @@ namespace ProjektGrupowy
 
         private void DropDownItems_Zespol(ComboBox CB) 
         {
-            string GetZespol = "SELECT Nazwa FROM Zespol ORDER BY Nazwa asc";
+            string GetZespol = "SELECT Nazwa, Rok_start, Rok_end FROM Zespol ORDER BY Nazwa asc";
             SqlDataReader Data = Connect(TypeOfAction.Select, GetZespol);
             while (Data.Read())
             {
                 CB.Items.Add(Data.GetString(0));
+                
+                RSt.Add(Data.GetInt32(1));
+                if (Data.IsDBNull(2))
+                {
+                    Rend.Add(DateTime.Now.Year);
+                }
+                else
+                {
+                    Rend.Add(Data.GetInt32(2));
+                }
             }
             Data.Close();
         }
@@ -954,6 +1009,24 @@ namespace ProjektGrupowy
                 return 1;
             else
                 return 0;
+        }
+
+        private void PRokBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PZespolBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int ID = PZespolBox1.SelectedIndex;
+            PRokBox1.Items.Clear();
+            if (ID > 0)
+            {
+                for (int i = (int)RSt[ID]; i <= (int)Rend[ID]; i++)
+                {
+                    PRokBox1.Items.Add(i);
+                }
+            }
         }
 
 /*############################ KONIEC  WSPOLNE ########################################################################################################*/

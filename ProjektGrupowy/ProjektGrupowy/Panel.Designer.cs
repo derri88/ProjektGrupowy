@@ -1233,6 +1233,7 @@
             this.PZespolBox1.Name = "PZespolBox1";
             this.PZespolBox1.Size = new System.Drawing.Size(157, 21);
             this.PZespolBox1.TabIndex = 34;
+            this.PZespolBox1.SelectedIndexChanged += new System.EventHandler(this.PZespolBox1_SelectedIndexChanged);
             // 
             // PZespol1
             // 
@@ -1380,6 +1381,7 @@
             this.PRokBox1.Name = "PRokBox1";
             this.PRokBox1.Size = new System.Drawing.Size(157, 21);
             this.PRokBox1.TabIndex = 27;
+            this.PRokBox1.SelectedIndexChanged += new System.EventHandler(this.PRokBox1_SelectedIndexChanged);
             // 
             // PNazwa1
             // 
