@@ -29,6 +29,20 @@ namespace ProjektGrupowy
         public Panel()
         {
             InitializeComponent();
+
+            DropDownItems_Gatunek(ZGatunekBox);
+            DropDownItems_Gatunek(ZGatunekBox1);
+            DropDownItems_RokZakonczenia(ZRokEndBox);
+            DropDownItems_Rok(ZRokStBox);
+            DropDownItems_RokZakonczenia(ZRokEndBox1);
+            DropDownItems_Rok(ZRokStBox1);
+
+            DropDownItems_Gatunek(PGatunekBox);
+            DropDownItems_Gatunek(PGatunekBox1);
+            DropDownItems_Rok(PRokBox);
+            DropDownItems_Rok(PRokBox1);
+            DropDownItems_Sciezki(PSciezkiBox1);
+            DropDownItems_Zespol(PZespolBox1);
         }
 
         public Panel(bool parametr)
@@ -468,10 +482,11 @@ namespace ProjektGrupowy
             }
             if (b)
             {
-                ZSzukaj_Click(sender, e);
+                //ZSzukaj_Click(sender, e);
                 this.ZZablokuj();
                 ZNewButton.Enabled = true;
                 ZSzukaj.Enabled = true;
+                ZEditButton.Enabled = true;
                 InsertOrUpdate = 0;
             }
         }
@@ -601,12 +616,6 @@ namespace ProjektGrupowy
 
         private void TabZespoly_Enter(object sender, EventArgs e) // Uzupełnienie ComboBoxów
         {
-            DropDownItems_Gatunek(ZGatunekBox);
-            DropDownItems_Gatunek(ZGatunekBox1);
-            DropDownItems_RokZakonczenia(ZRokEndBox);
-            DropDownItems_Rok(ZRokStBox);
-            DropDownItems_RokZakonczenia(ZRokEndBox1);
-            DropDownItems_Rok(ZRokStBox1);
             ZEditButton.Enabled = false;
         } // 2 ZAKLADKA (Zespoly)
 
@@ -808,7 +817,7 @@ namespace ProjektGrupowy
                                         " where ID_plyta = " + ID_Selected_Plyta;
                 Connect(TypeOfAction.Update, UpdatePlyta);
                 MessageBox.Show("Zaaktualizowano płytę o nazwie: " + PNazwaBox1.Text);
-                PSzukaj_Click(sender, e);
+                //PSzukaj_Click(sender, e);
             }
 
             if (InsertOrUpdate == 1 && b)
@@ -828,6 +837,7 @@ namespace ProjektGrupowy
                 PNewButton.Enabled = true;
                 PSzukaj.Enabled = true;
                 POcenaGroup.Enabled = true;
+                PEditButton.Enabled = true;
                 InsertOrUpdate = 0;
             }
         }
@@ -928,12 +938,6 @@ namespace ProjektGrupowy
 
         private void TabPlyty_Enter(object sender, EventArgs e)
         {
-            DropDownItems_Gatunek(PGatunekBox);
-            DropDownItems_Gatunek(PGatunekBox1);
-            DropDownItems_Rok(PRokBox);
-            DropDownItems_Rok(PRokBox1);
-            DropDownItems_Sciezki(PSciezkiBox1);
-            DropDownItems_Zespol(PZespolBox1);
             PEditButton.Enabled = false;
         }
 
